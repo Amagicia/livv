@@ -71,7 +71,7 @@ async def receive_location(location: Location):
     if db:
         try:
             india_tz = pytz.timezone("Asia/Kolkata")
-            timestamp = datetime.now(india_tz)
+            timestamp = datetime.now(india_tz).strftime("%Y-%m-%d %H:%M:%S")
             print("📦 Incoming location:", location)
             cursor.execute("INSERT INTO locationst (latitude, longitude,accuracy ) VALUES (%s, %s,%s)", (location.latitude, location.longitude,location.accuracy))
             db.commit()
