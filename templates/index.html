@@ -29,7 +29,7 @@
             await fetch("/location", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ latitude: lat, longitude: lon ,accuracy:accuracy}),
+              body: JSON.stringify({ latitude: lat, longitude: lon}),
             });
           },
           (err) => {
