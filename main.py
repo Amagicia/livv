@@ -1,74 +1,56 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
-from datetime import datetime
-import mysql.connector
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
+from pydantic import BaseModel
 from datetime import datetime
-import pytz
+import psycopg2
+import os
 
-# Get current time in India
-india = pytz.timezone("Asia/Kolkata")
-timestamp = datetime.now(india)
-
-
+# Set up app
 app = FastAPI()
-
-# CORS for frontend fetch requests
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Mount HTML + Static
-templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
-# MySQL connection
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",  # 👈 Replace
-    password="root@123",  # 👈 Replace
-    database="locationdb"
-)
-cursor = db.cursor()
-
-# Pydantic schema
+# Location model
 class Location(BaseModel):
     latitude: float
     longitude: float
-    accuracy: float
+
+# PostgreSQL connection
+try:
+    db = psycopg2.connect(
+        host=os.getenv("PGHOST"),
+        user=os.getenv("PGUSER"),
+        password=os.getenv("PGPASSWORD"),
+        dbname=os.getenv("PGDATABASE"),
+        port=os.getenv("PGPORT", 5432)
+    )
+    cursor = db.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS locations (
+            id SERIAL PRIMARY KEY,
+            latitude DOUBLE PRECISION NOT NULL,
+            longitude DOUBLE PRECISION NOT NULL,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    db.commit()
+except Exception as e:
+    print("❌ DB connection error:", e)
+    db = None
 
 @app.get("/", response_class=HTMLResponse)
-def serve_page(request: Request):
+async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/location")
-def store_location(loc: Location):
-    india = pytz.timezone("Asia/Kolkata")
-    timestamp = datetime.now(india)
-
-    print("📍 Location:", loc.latitude, loc.longitude, "🕒", timestamp,"accuracy",loc.accuracy)
-
-    cursor.execute(
-        "INSERT INTO locations (latitude, longitude, timestamp) VALUES (%s, %s, %s)",
-        (loc.latitude, loc.longitude, timestamp)
-    )
-    db.commit()
-
-    return {
-        "status": "saved",
-        "time": timestamp.strftime("%Y-%m-%d %H:%M:%S")
-    }
-
-
-@app.get("/admin/locations")
-def get_all_locations():
-    cursor.execute("SELECT * FROM locations")
-    rows = cursor.fetchall()
-    return [{"id": r[0], "lat": r[1], "lon": r[2], "time": r[3].isoformat()} for r in rows]
+async def receive_location(location: Location):
+    if db:
+        try:
+            cursor.execute("INSERT INTO locations (latitude, longitude) VALUES (%s, %s)", (location.latitude, location.longitude))
+            db.commit()
+            return {"message": "Location saved ✅"}
+        except Exception as e:
+            return {"error": str(e)}
+    return {"error": "DB not connected"}
