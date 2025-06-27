@@ -78,15 +78,15 @@
       }
   
       navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        alert(`📍 Location fetched: ${latitude}, ${longitude}`);
+        const { latitude, longitude ,accuracy } = position.coords;
+        alert(`📍 Location fetched: ${latitude}, ${longitude},${accuracy}`);
   
         const res = await fetch("/location", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ latitude, longitude })
+          body: JSON.stringify({ latitude, longitude,accuracy})
         });
   
         const result = await res.json();

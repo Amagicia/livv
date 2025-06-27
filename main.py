@@ -6,6 +6,8 @@ from pydantic import BaseModel
 from datetime import datetime
 import psycopg2
 import os
+import pytz
+
 
 # Set up app
 app = FastAPI()
@@ -16,6 +18,7 @@ templates = Jinja2Templates(directory="templates")
 class Location(BaseModel):
     latitude: float
     longitude: float
+    accuracy :float
 
 # PostgreSQL connection
 try:
@@ -31,10 +34,11 @@ try:
     cursor = db.cursor()
     print("🛠️ Creating table if not exists...")
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS locations (
+        CREATE TABLE IF NOT EXISTS locationst (
             id SERIAL PRIMARY KEY,
             latitude DOUBLE PRECISION NOT NULL,
             longitude DOUBLE PRECISION NOT NULL,
+            accuracy  DOUBLE PRECISION NOT NULL,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -53,7 +57,7 @@ async def home(request: Request):
 async def get_all():
     print("📥 GET request to /all")
     try:
-        cursor.execute("SELECT * FROM locations")
+        cursor.execute("SELECT * FROM locationst")
         results = cursor.fetchall()
         print("📦 Fetched records:", results)
         return results
@@ -66,8 +70,10 @@ async def receive_location(location: Location):
     print("📥 POST request to /location")
     if db:
         try:
+            india_tz = pytz.timezone("Asia/Kolkata")
+            timestamp = datetime.now(india_tz)
             print("📦 Incoming location:", location)
-            cursor.execute("INSERT INTO locations (latitude, longitude) VALUES (%s, %s)", (location.latitude, location.longitude))
+            cursor.execute("INSERT INTO locationst (latitude, longitude,accuracy ) VALUES (%s, %s,%s)", (location.latitude, location.longitude,location.accuracy))
             db.commit()
             print("✅ Location saved to DB")
             return {"message": "Location saved ✅"}
