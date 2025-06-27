@@ -19,13 +19,17 @@ class Location(BaseModel):
 
 # PostgreSQL connection
 try:
-    db = psycopg2.connect(
-        host=os.getenv("PGHOST"),
-        user=os.getenv("PGUSER"),
-        password=os.getenv("PGPASSWORD"),
-        dbname=os.getenv("PGDATABASE"),
-        port=os.getenv("PGPORT", 5432)
-    )
+   import os
+import psycopg2
+
+db = psycopg2.connect(
+    host="dpg-d1fbfsfgi27c73ckorkg-a",
+    user="location_1698_user",
+    password="Scmgt1Keu8Y4SgFsoTM0OVG6PKAUg1Hu",
+    dbname="location_1698",
+    port=5432
+)
+
     cursor = db.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS locations (
@@ -43,6 +47,10 @@ except Exception as e:
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+@app.get("/all")
+async def get_all():
+    cursor.execute("SELECT * FROM locations")
+    return cursor.fetchall()
 
 @app.post("/location")
 async def receive_location(location: Location):

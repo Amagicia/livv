@@ -1,28 +1,9 @@
 services:
   - type: web
-    name: fastapi-location-app
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "uvicorn main:app --host 0.0.0.0 --port 8000"
+    name: location-tracker
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
     envVars:
-      - key: PGHOST
-        fromDatabase:
-          name: fastapi-db
-          property: host
-      - key: PGDATABASE
-        fromDatabase:
-          name: fastapi-db
-          property: database
-      - key: PGUSER
-        fromDatabase:
-          name: fastapi-db
-          property: user
-      - key: PGPASSWORD
-        fromDatabase:
-          name: fastapi-db
-          property: password
-      - key: PGPORT
-        value: 5432
-
-databases:
-  - name: fastapi-db
+      - key: PYTHON_VERSION
+        value: 3.11
