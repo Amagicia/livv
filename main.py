@@ -56,6 +56,7 @@ async def get_all():
 async def receive_location(location: Location):
     if db:
         try:
+            print("📦 Incoming location:", location)  # Debug log
             cursor.execute("INSERT INTO locations (latitude, longitude) VALUES (%s, %s)", (location.latitude, location.longitude))
             db.commit()
             return {"message": "Location saved ✅"}

