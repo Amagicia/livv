@@ -18,17 +18,17 @@ class Location(BaseModel):
     longitude: float
 
 # PostgreSQL connection
-try:
-   import os
+import os
 import psycopg2
+try:
 
-db = psycopg2.connect(
-    host="dpg-d1fbfsfgi27c73ckorkg-a",
-    user="location_1698_user",
-    password="Scmgt1Keu8Y4SgFsoTM0OVG6PKAUg1Hu",
-    dbname="location_1698",
-    port=5432
-)
+    db = psycopg2.connect(
+        host="dpg-d1fbfsfgi27c73ckorkg-a",
+        user="location_1698_user",
+        password="Scmgt1Keu8Y4SgFsoTM0OVG6PKAUg1Hu",
+        dbname="location_1698",
+        port=5432
+    )
 
     cursor = db.cursor()
     cursor.execute("""
