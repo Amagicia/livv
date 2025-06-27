@@ -3,36 +3,61 @@
 <head>
   <title>Shoping Now</title>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-    iframe { width: 100vw; height: 60vh; border: none; }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+
     button {
-  padding: 14px 32px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-}
+      padding: 22px 34px;
+      font-size: 1.8rem;
+      background-color: #1db954;
+      border: none;
+      margin-top: 150px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
 
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-button:active {
-  transform: scale(0.98);
-}
+    button:hover {
+      background-color: #1ed760;
+    }
   </style>
 </head>
 <body>
   <!-- Replace VIDEO_ID with real YouTube ID -->
   <!-- <iframe src="https://www.youtube.com/embed/II2EO3Nw4m0?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=VIDEO_ID"></iframe> -->
   <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/II2EO3Nw4m0?si=9BaGNUy8-hZMkWA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+  <div class="video-container">
   <iframe src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
   <button id="getLocationBtn">Play The Music</button>
 
   <script>
