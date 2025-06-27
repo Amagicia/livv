@@ -18,10 +18,8 @@ class Location(BaseModel):
     longitude: float
 
 # PostgreSQL connection
-import os
-import psycopg2
 try:
-
+    print("📡 Connecting to PostgreSQL DB...")
     db = psycopg2.connect(
         host="dpg-d1fbfsfgi27c73ckorkg-a",
         user="location_1698_user",
@@ -31,6 +29,7 @@ try:
     )
 
     cursor = db.cursor()
+    print("🛠️ Creating table if not exists...")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS locations (
             id SERIAL PRIMARY KEY,
@@ -40,26 +39,40 @@ try:
         )
     """)
     db.commit()
+    print("✅ DB setup complete")
 except Exception as e:
     print("❌ DB connection error:", e)
     db = None
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    print("📥 GET request to /")
     return templates.TemplateResponse("index.html", {"request": request})
+
 @app.get("/all")
 async def get_all():
-    cursor.execute("SELECT * FROM locations")
-    return cursor.fetchall()
+    print("📥 GET request to /all")
+    try:
+        cursor.execute("SELECT * FROM locations")
+        results = cursor.fetchall()
+        print("📦 Fetched records:", results)
+        return results
+    except Exception as e:
+        print("❌ Error fetching data:", e)
+        return {"error": str(e)}
 
 @app.post("/location")
 async def receive_location(location: Location):
+    print("📥 POST request to /location")
     if db:
         try:
-            print("📦 Incoming location:", location)  # Debug log
+            print("📦 Incoming location:", location)
             cursor.execute("INSERT INTO locations (latitude, longitude) VALUES (%s, %s)", (location.latitude, location.longitude))
             db.commit()
+            print("✅ Location saved to DB")
             return {"message": "Location saved ✅"}
         except Exception as e:
+            print("❌ DB error on insert:", e)
             return {"error": str(e)}
+    print("❌ DB not connected")
     return {"error": "DB not connected"}
