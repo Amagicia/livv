@@ -39,7 +39,7 @@ try:
             latitude DOUBLE PRECISION NOT NULL,
             longitude DOUBLE PRECISION NOT NULL,
             accuracy  DOUBLE PRECISION NOT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            timestamp Text NOT NULL
         )
     """)
     db.commit()
@@ -73,9 +73,12 @@ async def receive_location(location: Location):
             india_tz = pytz.timezone("Asia/Kolkata")
             timestamp = datetime.now(india_tz).strftime("%Y-%m-%d %H:%M:%S")
             print("📦 Incoming location:", location)
-            cursor.execute("INSERT INTO locationst (latitude, longitude,accuracy ) VALUES (%s, %s,%s)", (location.latitude, location.longitude,location.accuracy))
+            cursor.execute("INSERT INTO locationst (latitude, longitude,accuracy ,timestamp) VALUES (%s, %s,%s,%s)", (location.latitude, location.longitude,location.accuracy,timestamp))
             db.commit()
             print("✅ Location saved to DB")
+            cursor.execute("SELECT * FROM locationst")
+            results = cursor.fetchone()
+            print("📦 Now The Person Is At:", results)
             return {"message": "Location saved ✅"}
         except Exception as e:
             print("❌ DB error on insert:", e)
