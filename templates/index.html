@@ -689,6 +689,11 @@
 
             .card img {
                 height: 300px;
+                object-fit: cover; /* this is the key */
+                width: 100%;
+  height: 250px; /* or adjust as needed */
+  object-fit: cover; /* this is the key */
+  border-bottom: 1px solid #eee;
             }
 
             .card-content {
@@ -797,19 +802,13 @@
                     JugadCart<br> <span class="highlight-text">Signature Style.</span>
                 </h1>
                 <p>
-                    Discover meticulously engineered apparel designed for the modern man.
-                    We bring together premium brands with unparalleled value, ensuring
-                    every piece elevates your presence. Achieve a look that speaks volumes,
-                    effortlessly commanding attention with your <span id="highlight-word" class="highlight-text">presence</span>.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn">Explore shirts</a>
-                    <a href="#how-it-works" class="btn btn-secondary">Our Mission</a>
-                </div>
+                    We bring you the best shirts and styles from top online stores like Flipkart, Amazon, Meesho, Ajio, Myntra, and Snapdeal — all in one place, easy and affordable <span id="highlight-word" class="highlight-text">presence</span>.
+                </p> 
+
             </div>
         </section>
 
-        <section class="trust-bar">
+        <!-- <section class="trust-bar">
             <div class="trust-item">
                 <i class="fas fa-hammer"></i> Precision Crafted
             </div>
@@ -822,18 +821,16 @@
             <div class="trust-item">
                 <i class="fas fa-headset"></i> Dedicated Support
             </div>
-        </section>
+        </section> -->
 
         <div class="container">
-            <h2 class="section-title" id="products">Essential Gear</h2>
+            <!-- <h2 class="section-title" id="products">Essential Gear</h2> -->
 
-            <div class="weekly-selection-info">
+            <!-- <div class="weekly-selection-info">
                 <p>
-                    These 8 shirts are meticulously selected for this week.
-                    Our advanced Machine Learning algorithm analyzes trends and feedback to curate the
-                    best drops, bringing you fresh, exclusive selections **every week**.
+                   
                 </p>
-            </div>
+            </div> -->
             <div class="grid">
                 {% for shirt in shirts %}
                 <div class="card">
