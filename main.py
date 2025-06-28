@@ -78,6 +78,7 @@ async def home(request: Request):
         {"name": "Men Slim Mid Rise Black Jeans", "price": "₹499", "image": "img6.jpg", "link": "https://dl.flipkart.com/dl/brexx-slim-men-black-jeans/p/itm0bce96d328c7e?pid=JEAHYCVUYMC9QQRT&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.bda918e4-c13f-4ddc-977a-88a0ef6e7f4f.JEAHYCVUYMC9QQRT&_appId=WA"},
         {"name": "Men Regular Fit Striped Spread Collar Casual Shirt", "price": "₹930", "image": "img7.jpg", "link": "https://dl.flipkart.com/dl/house-mahnots-men-striped-casual-blue-shirt/p/itm7f012b430aa69?pid=SHTH8ZFFEMFZGXTV&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.d3eb9bac-55c2-443d-ab75-f25c24abd3da.SHTH8ZFFEMFZGXTV&_appId=WA"},
         {"name": "Men Regular Mid Rise Blue Jeans", "price": "₹1039", "image": "img5.jpg", "link": "https://dl.flipkart.com/dl/flying-machine-regular-men-blue-jeans/p/itm5fa92a3147a92?pid=JEAH3XVYEG9TGPYK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.4a293916-7fd5-40a1-8d65-4e8afa3f893a.JEAH3XVYEG9TGPYK&_appId=WA"},
+        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt  (Pack of 3)", "price": "₹500", "image": "img10.jpg", "link": "https://dl.flipkart.com/dl/youth-first-men-solid-casual-cream-black-brown-shirt/p/itmad86102879757?pid=SHTHCZ4ZUXEFMTHK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.68a3c9c0-617e-475a-83cc-3d52b7ff67ed.SHTHCZ4ZUXEFMTHK&_appId=WA"},
       ]
     return templates.TemplateResponse("index.html", {
         "request": request,
