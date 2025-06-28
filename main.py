@@ -50,11 +50,10 @@ except Exception as e:
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    print("📥 GET request to /")
     shirts = [
-        {"name": "Black Tee", "price": "₹499", "link": "/"},
-        {"name": "White Polo", "price": "₹699", "link": "/"},
-        {"name": "Red Hoodie", "price": "₹999", "link": "https://dl.flipkart.com/dl/jqr-global-sports-shoes-walking-lightweight-trekking-stylish-running-shoes-men/p/itmc7cb726b5bde2?pid=SHOGHZNUCYZWEMHN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d7a4717-8376-4623-b02e-3c7fdd432e7c.SHOGHZNUCYZWEMHN&_appId=com.instagram.android"}
+        {"name": "Black Tee", "price": "₹499", "image": "redhoodie.jpg", "link": "https://your-site.com/black"},
+        {"name": "White Polo", "price": "₹699", "image": "white.jpg", "link": "https://your-site.com/white"},
+        {"name": "Red Hoodie", "price": "₹999", "image": "red.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
     ]
     return templates.TemplateResponse("index.html", {"request": request, "shirts": shirts})
 

