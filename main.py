@@ -51,9 +51,9 @@ except Exception as e:
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     shirts = [
-        {"name": "Black Tee", "price": "₹499", "image": "redhoodie.jpg", "link": "https://your-site.com/black"},
-        {"name": "White Polo", "price": "₹699", "image": "white.jpg", "link": "https://your-site.com/white"},
-        {"name": "Red Hoodie", "price": "₹999", "image": "red.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
+        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
+        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
+        {"name": "Red Hoodie", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
     ]
     return templates.TemplateResponse("index.html", {"request": request, "shirts": shirts})
 
