@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordinates on Map</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    #map {
+      height: 70vh;
+      width: 100%;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 py-10 px-4">
+
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-lg text-center">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">📍 Coordinates on a Map</h1>
+    <p class="text-gray-600 mb-6">Choose a location to view it on the map</p>
+
+    <label for="location-select" class="block text-left text-sm font-medium text-gray-700 mb-2">Select a Location:</label>
+    <select id="location-select" class="block w-full px-4 py-2 border rounded-md">
+        <option value="">--Please choose an option--</option>
+        {% for loc in coordinates %}
+          <option value="{{ loop.index0 }}">
+            SNo.{{loc.id}} 🧭 Lat: {{ loc.latitude }} | 📍 Lon: {{ loc.longitude }} | 🎯 Accuracy: {{ loc.accuracy }} | 🕒 {{ loc.time }}
+          </option>
+        {% endfor %}
+      </select>
+      
+      
+  </div>
+
+  <div class="max-w-4xl mx-auto mt-8">
+    <div id="map"></div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Safely load coordinates into JS
+    const allCoordinates = {{ coordinates | tojson | safe }};
+  
+    const map = L.map('map').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+  
+    let currentMarker = null;
+  
+    function showLocation(coord) {
+      if (currentMarker) map.removeLayer(currentMarker);
+      const { latitude, longitude, accuracy, time } = coord;
+      currentMarker = L.marker([latitude, longitude])
+        .addTo(map)
+        .bindPopup(`<b>📍 Location</b><br>
+          Lat: ${latitude}<br>
+          Lon: ${longitude}<br>
+          Accuracy: ${accuracy}<br>
+          Time: ${time}`)
+        .openPopup();
+  
+      map.setView([latitude, longitude], 16); // zoom in nicely
+    }
+  
+    document.getElementById('location-select').addEventListener('change', e => {
+      const index = e.target.value;
+      if (index !== "") {
+        showLocation(allCoordinates[parseInt(index)]);
+      } else {
+        map.setView([0, 0], 2);
+        if (currentMarker) map.removeLayer(currentMarker);
+      }
+    });
+  </script>
+  
+</body>
+</html>

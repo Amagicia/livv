@@ -171,3 +171,22 @@ async def show_data_table(request: Request):
         return templates.TemplateResponse("show.html", {"request": request, "data": data})
     except Exception as e:
         return HTMLResponse(content=f"<h3>Error: {e}</h3>", status_code=500)
+@app.get("/map", response_class=HTMLResponse)
+async def read_root(request: Request):
+    try:
+        cursor.execute("SELECT * FROM locationst ORDER BY id DESC")
+        rows = cursor.fetchall()
+        india_tz = pytz.timezone("Asia/Kolkata")
+        data = [
+            {
+                "id": row[0],
+                "latitude": row[1],
+                "longitude": row[2],
+                "accuracy": row[3],
+                "time": row[4].astimezone(india_tz).strftime("%d %B %Y, %I:%M %p")
+            } for row in rows
+        ]
+    # Pass the coordinates to the Jinja2 template
+        return templates.TemplateResponse("map.html", {"request": request, "coordinates": data})
+    except Exception as e:
+        return HTMLResponse(content=f"<h3>Error: {e}</h3>", status_code=500)
