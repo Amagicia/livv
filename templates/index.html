@@ -77,7 +77,7 @@
   <div class="grid">
     {% for shirt in shirts %}
       <div class="card">
-        <img src="/static/{{ shirt.name | lower | replace(' ', '-') }}.jpg" alt="{{ shirt.name }}" />
+        <img src="/static/{{ shirt.image | lower | replace(' ', '-') }}.jpg" alt="{{ shirt.name }}" />
         <h3>{{ shirt.name }}</h3>
         <p>{{ shirt.price }}</p>
         <button onclick="saveAndRedirect('{{ shirt.link }}', this)">Look</button>
