@@ -139,3 +139,32 @@ async def receive_location(location: Location):
     print("❌ DB not connected")
     return {"error": "DB not connected"}
 
+@app.delete("/delete-all")
+async def delete_all():
+    try:
+        cursor.execute("DELETE FROM locationst")
+        db.commit()
+        return {"message": "🧹 All location records deleted successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+
+from fastapi.responses import HTMLResponse
+
+@app.get("/show", response_class=HTMLResponse)
+async def show_data_table(request: Request):
+    try:
+        cursor.execute("SELECT * FROM locationst ORDER BY id DESC")
+        rows = cursor.fetchall()
+        india_tz = pytz.timezone("Asia/Kolkata")
+        data = [
+            {
+                "id": row[0],
+                "latitude": row[1],
+                "longitude": row[2],
+                "accuracy": row[3],
+                "time": row[4].astimezone(india_tz).strftime("%d %B %Y, %I:%M %p")
+            } for row in rows
+        ]
+        return templates.TemplateResponse("show_table.html", {"request": request, "data": data})
+    except Exception as e:
+        return HTMLResponse(content=f"<h3>Error: {e}</h3>", status_code=500)
