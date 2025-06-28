@@ -15,12 +15,24 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Location model
-class LpId=WA"},
-        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
-        {"name": "Red Hoodie", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},ocation(BaseModel):
+class Location:
     latitude: float
     longitude: float
     accuracy :float
+# Shirt model
+class Shirt(BaseModel):
+    id: int
+    name: str
+    price: str
+    image: str
+    link: str
+
+# Sample shirt data (could be DB in future)
+shirts = [
+    {"id": 1, "name": "Men Slim Fit Checkered Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "/product/1"},
+    {"id": 2, "name": "Men Solid Brown Shirt", "price": "₹380", "image": "img2.jpg", "link": "/product/2"},
+    {"id": 3, "name": "Red Hoodie", "price": "₹435", "image": "img3.jpg", "link": "/product/3"},
+]
 
 # PostgreSQL connection
 try:
@@ -49,19 +61,28 @@ try:
 except Exception as e:
     print("❌ DB connection error:", e)
     db = None
+shir = [
+        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
+        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
+        {"name": "Red Hoodie", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
+        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
+      ]
+# @app.get("/", response_class=HTMLResponse)
+# async def home(request: Request):
+
+#     return templates.TemplateResponse("index.html", {"request": request, "shirts": shir})
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    shirts = [
-        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
-        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
-        {"name": "Red Hoodie", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
-        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
-        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
-        {"name": "Red Hoodie", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
-        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
-    ]
-    return templates.TemplateResponse("index.html", {"request": request, "shirts": shirts})
+    print("📥 GET request to /")
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "shirts": shir,
+        "og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",
+        "og_description": "Get stylish, budget-friendly shirts starting at ₹279. Limited stock!",
+        "og_image": "https://livv-2.onrender.com/static/redhoodie.jpg",
+        "og_url": "https://livv-2.onrender.com/"
+    })
 
 @app.get("/all")
 async def get_all():
@@ -111,3 +132,4 @@ async def receive_location(location: Location):
             return {"error": str(e)}
     print("❌ DB not connected")
     return {"error": "DB not connected"}
+
