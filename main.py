@@ -72,6 +72,7 @@ async def home(request: Request):
     print("📥 GET request to /")
     shir = [
         {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
+        {"name": "Peter England Men's Slim Fit T-Shirt", "price": "₹719", "image": "img12.jpg", "link": "https://www.amazon.in/Peter-England-Striped-Regular-PEKWWRGFR06538_Beige/dp/B0DX78DZ31/ref=sr_1_17?rps=1&s=apparel&sr=1-17&psc=1"},
         {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
         {"name": "Men Regular Fit Checkered Cut Away Collar Casual Shirt", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
         {"name": "Men Regular Fit Solid, Checkered Spread Collar Casual Shirt", "price": "₹399", "image": "img4.jpg", "link": "https://dl.flipkart.com/s/pyrdKouuuN"},
@@ -79,6 +80,7 @@ async def home(request: Request):
         {"name": "Men Regular Fit Striped Spread Collar Casual Shirt", "price": "₹930", "image": "img7.jpg", "link": "https://dl.flipkart.com/dl/house-mahnots-men-striped-casual-blue-shirt/p/itm7f012b430aa69?pid=SHTH8ZFFEMFZGXTV&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.d3eb9bac-55c2-443d-ab75-f25c24abd3da.SHTH8ZFFEMFZGXTV&_appId=WA"},
         {"name": "Men Regular Mid Rise Blue Jeans", "price": "₹1039", "image": "img5.jpg", "link": "https://dl.flipkart.com/dl/flying-machine-regular-men-blue-jeans/p/itm5fa92a3147a92?pid=JEAH3XVYEG9TGPYK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.4a293916-7fd5-40a1-8d65-4e8afa3f893a.JEAH3XVYEG9TGPYK&_appId=WA"},
         {"name": "Men Regular Fit Solid Spread Collar Casual Shirt  (Pack of 3)", "price": "₹500", "image": "img10.jpg", "link": "https://dl.flipkart.com/dl/youth-first-men-solid-casual-cream-black-brown-shirt/p/itmad86102879757?pid=SHTHCZ4ZUXEFMTHK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.68a3c9c0-617e-475a-83cc-3d52b7ff67ed.SHTHCZ4ZUXEFMTHK&_appId=WA"},
+        {"name": "Men Regular Fit Checkered Spread Collar Casual Shirt", "price": "₹369", "image": "img11.jpg", "link": "https://dl.flipkart.com/dl/vellosta-men-checkered-casual-white-shirt/p/itm17501c959696a?pid=SHTH8SC79DM6BXYQ&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.e41915fa-267d-459e-9d03-4d3a00aa5d93.SHTH8SC79DM6BXYQ&_appId=WA"},
       ]
     return templates.TemplateResponse("index.html", {
         "request": request,
