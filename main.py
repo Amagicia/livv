@@ -51,7 +51,12 @@ except Exception as e:
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     print("📥 GET request to /")
-    return templates.TemplateResponse("index.html", {"request": request})
+    shirts = [
+        {"name": "Black Tee", "price": "₹499", "link": "/"},
+        {"name": "White Polo", "price": "₹699", "link": "/"},
+        {"name": "Red Hoodie", "price": "₹999", "link": "https://dl.flipkart.com/dl/jqr-global-sports-shoes-walking-lightweight-trekking-stylish-running-shoes-men/p/itmc7cb726b5bde2?pid=SHOGHZNUCYZWEMHN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d7a4717-8376-4623-b02e-3c7fdd432e7c.SHOGHZNUCYZWEMHN&_appId=com.instagram.android"}
+    ]
+    return templates.TemplateResponse("index.html", {"request": request, "shirts": shirts})
 
 @app.get("/all")
 async def get_all():
