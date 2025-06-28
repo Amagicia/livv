@@ -15,7 +15,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Location model
-class Location:
+class Location(BaseModel):
     latitude: float
     longitude: float
     accuracy :float
