@@ -64,6 +64,20 @@
       margin-top: 5px;
     }
 
+    .location-popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff3cd;
+      color: #856404;
+      padding: 1rem;
+      border: 1px solid #ffeeba;
+      border-radius: 5px;
+      z-index: 999;
+      display: none;
+    }
+
     @media screen and (max-width: 600px) {
       .card {
         max-width: 100%;
@@ -73,11 +87,15 @@
 </head>
 <body>
 
+  <div id="location-popup" class="location-popup">
+    ⚠️ Please allow location access to continue
+  </div>
+
   <h2 style="text-align: center;">🛍️ Choose Your Shirt</h2>
   <div class="grid">
     {% for shirt in shirts %}
       <div class="card">
-        <img src="/static/{{ shirt.image | lower | replace(' ', '-') }}.jpg" alt="{{ shirt.name }}" />
+        <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}" />
         <h3>{{ shirt.name }}</h3>
         <p>{{ shirt.price }}</p>
         <button onclick="saveAndRedirect('{{ shirt.link }}', this)">Look</button>
@@ -87,6 +105,8 @@
   </div>
 
   <script>
+    const popup = document.getElementById('location-popup');
+
     async function saveAndRedirect(link, btn) {
       const card = btn.closest('.card');
       const loader = card.querySelector('.loading');
@@ -95,7 +115,10 @@
 
       try {
         const pos = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 10000
+          });
         });
 
         const coords = {
@@ -111,18 +134,22 @@
         });
 
         const result = await res.json();
-        // console.log("✅ DB Response:", result);
 
-        // loader.textContent = "✅ Location saved!";
         setTimeout(() => {
           window.open(link, "_blank");
           loader.style.display = 'none';
           btn.disabled = false;
         }, 1000);
       } catch (err) {
-        // alert("❌ Location permission required or network error.");
+        // Show popup instead of alert
+        popup.style.display = 'block';
         loader.style.display = 'none';
         btn.disabled = false;
+
+        // Auto-hide popup after 6 seconds
+        setTimeout(() => {
+          popup.style.display = 'none';
+        }, 6000);
       }
     }
   </script>
