@@ -53,17 +53,27 @@ async def home(request: Request):
     print("📥 GET request to /")
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/all")
-async def get_all():
-    print("📥 GET request to /all")
+@app.get("/locations")
+async def get_locations():
+    print("📥 GET request to /locations")
     try:
-        cursor.execute("SELECT * FROM locationst")
+        cursor.execute("SELECT * FROM locations")
         results = cursor.fetchall()
-        print("📦 Fetched records:", results)
-        return results
+        formatted = [
+            {
+                "Id": row[0],
+                "lat": row[1],
+                "lng": row[2],
+                "time": row[3].strftime("%d %B %Y, %I:%M %p")  # 👈 formats nicely
+            }
+            for row in results
+        ]
+        print("📦 Fetched and formatted coordinates:", formatted)
+        return formatted
     except Exception as e:
-        print("❌ Error fetching data:", e)
+        print("❌ Error fetching coordinates:", e)
         return {"error": str(e)}
+
 
 @app.post("/location")
 async def receive_location(location: Location):
