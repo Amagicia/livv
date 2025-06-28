@@ -165,6 +165,6 @@ async def show_data_table(request: Request):
                 "time": row[4].astimezone(india_tz).strftime("%d %B %Y, %I:%M %p")
             } for row in rows
         ]
-        return templates.TemplateResponse("show_table.html", {"request": request, "data": data})
+        return templates.TemplateResponse("show.html", {"request": request, "data": data})
     except Exception as e:
         return HTMLResponse(content=f"<h3>Error: {e}</h3>", status_code=500)
