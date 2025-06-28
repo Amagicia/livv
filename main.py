@@ -75,6 +75,8 @@ async def home(request: Request):
         {"name": "Men Regular Fit Solid Spread Collar Casual Shirt", "price": "₹380", "image": "img2.jpg", "link": "https://dl.flipkart.com/dl/qlonz-store-men-solid-casual-brown-shirt/p/itm676874aeabdbf?pid=SHTHYZYHCGP8PAPN&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.75bdb34d-fc27-4863-bde9-b4838b726009.SHTHYZYHCGP8PAPN&_appId=WA"},
         {"name": "Red Hoodie Men Checkered Cut Away Collar Casual Shirt", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
         {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
+        {"name": "Red Hoodie Men Checkered Cut Away Collar Casual Shirt", "price": "₹435", "image": "img3.jpg", "link": "https://dl.flipkart.com/dl/allwin-paul-men-checkered-casual-brown-shirt/p/itma5a3ebca3aec8?pid=SHTGFU69ZTVHFFNC&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.f1bf3a7e-a6a7-4bfc-a0d2-23cf76d3d069.SHTGFU69ZTVHFFNC&_appId=WA"},
+        {"name": "Men Slim Fit Checkered Spread Collar Casual Shirt", "price": "₹279", "image": "redhoodie.jpg", "link": "https://dl.flipkart.com/dl/tanip-men-checkered-casual-green-shirt/p/itm9ffb5171a3552?pid=SHTGE85EWWDUN2S4&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.1d47ca18-b09e-4892-a6fc-5f1507bf6809.SHTGE85EWWDUN2S4&_appId=WA"},
       ]
     return templates.TemplateResponse("index.html", {
         "request": request,
@@ -84,6 +86,8 @@ async def home(request: Request):
         "og_image": "https://livv-2.onrender.com/static/redhoodie.jpg",
         "og_url": "https://livv-2.onrender.com/"
     })
+
+
 
 @app.get("/all")
 async def get_all():
