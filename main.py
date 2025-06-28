@@ -22,7 +22,7 @@ class Location(BaseModel):
 
 # PostgreSQL connection
 try:
-    print("📡 Connecting to PostgreSQL DB...")
+    print("📱 Connecting to PostgreSQL DB...")
     db = psycopg2.connect(
         host="dpg-d1fbfsfgi27c73ckorkg-a",
         user="location_1698_user",
@@ -39,7 +39,7 @@ try:
             latitude DOUBLE PRECISION NOT NULL,
             longitude DOUBLE PRECISION NOT NULL,
             accuracy  DOUBLE PRECISION NOT NULL,
-            timestamp Text NOT NULL
+            timestamp TIMESTAMP NOT NULL
         )
     """)
     db.commit()
@@ -53,25 +53,28 @@ async def home(request: Request):
     print("📥 GET request to /")
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/locations")
-async def get_locations():
-    print("📥 GET request to /locations")
+@app.get("/all")
+async def get_all():
+    print("📥 GET request to /all")
     try:
-        cursor.execute("SELECT * FROM locations")
-        results = cursor.fetchall()
-        formatted = [
+        cursor.execute("SELECT * FROM locationst")
+        rows = cursor.fetchall()
+
+        india_tz = pytz.timezone("Asia/Kolkata")
+        results = [
             {
-                "Id": row[0],
-                "lat": row[1],
-                "lng": row[2],
-                "time": row[3].strftime("%d %B %Y, %I:%M %p")  # 👈 formats nicely
-            }
-            for row in results
+                "id": row[0],
+                "latitude": row[1],
+                "longitude": row[2],
+                "accuracy": row[3],
+                "time": row[4].astimezone(india_tz).strftime("%d %B %Y, %I:%M %p")
+            } for row in rows
         ]
-        print("📦 Fetched and formatted coordinates:", formatted)
-        return formatted
+
+        print("📦 Fetched records:", results)
+        return results
     except Exception as e:
-        print("❌ Error fetching coordinates:", e)
+        print("❌ Error fetching data:", e)
         return {"error": str(e)}
 
 
@@ -81,12 +84,15 @@ async def receive_location(location: Location):
     if db:
         try:
             india_tz = pytz.timezone("Asia/Kolkata")
-            timestamp = datetime.now(india_tz).strftime("%Y-%m-%d %H:%M:%S")
+            timestamp = datetime.now(india_tz)
+
             print("📦 Incoming location:", location)
+            print("🕒 Timestamp (India):", timestamp.strftime("%d %B %Y, %I:%M %p"))
+
             cursor.execute("INSERT INTO locationst (latitude, longitude,accuracy ,timestamp) VALUES (%s, %s,%s,%s)", (location.latitude, location.longitude,location.accuracy,timestamp))
             db.commit()
             print("✅ Location saved to DB")
-            cursor.execute("SELECT * FROM locationst")
+            cursor.execute("SELECT * FROM locationst ORDER BY id DESC LIMIT 1")
             results = cursor.fetchone()
             print("📦 Now The Person Is At:", results)
             return {"message": "Location saved ✅"}
