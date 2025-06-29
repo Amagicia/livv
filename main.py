@@ -193,3 +193,15 @@ async def read_root(request: Request):
         return templates.TemplateResponse("map.html", {"request": request, "coordinates": data})
     except Exception as e:
         return HTMLResponse(content=f"<h3>Error: {e}</h3>", status_code=500)
+@app.get("/one", response_class=HTMLResponse)
+async def show_locations(request: Request):
+    query = """
+    SELECT DISTINCT ROUND(latitude, 5), ROUND(longitude, 5), ROUND(accuracy, 2)
+    FROM locationst
+    """
+    cursor.execute(query)
+    locations = cursor.fetchall()
+    return templates.TemplateResponse("uniq.html", {
+        "request": request,
+        "data": locations
+    })
