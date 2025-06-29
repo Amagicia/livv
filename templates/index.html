@@ -782,7 +782,7 @@
 
 <body>
     <header>
-        <div class="logo">Forge Threads</div>
+        <div class="logo">GreatDeal</div>
         <nav class="nav-links">
             <a href="#">New Arrivals</a>
             <a href="#">Collections</a>
@@ -795,7 +795,7 @@
         <section class="hero-section">
             <div class="hero-content">
                 <h1>
-                    Forge Your <br> <span class="highlight-text">Signature Style.</span>
+                    Great<br> <span class="highlight-text">Deal.</span>
                 </h1>
                 <p>
                     Discover meticulously engineered apparel designed for the modern man.
@@ -806,7 +806,7 @@
                 </p>
                 <div class="hero-buttons">
                     <button class="btn" onclick="saveAndRedirectToHome(this)">Explore Shirts</button>
-                    <div class="loading">Redirecting...</div>
+                    <!-- <div class="loading">Redirecting...</div> -->
                     <!-- <a href="/home" onclick="" class="btn">Explore Shirts</a> -->
                     <a href="#how-it-works" class="btn btn-secondary">Our Mission</a>
                 </div>
@@ -833,14 +833,14 @@
 
             <div class="weekly-selection-info">
                 <p>
-                    These **8 shirts** are meticulously selected for this week.
-                    Our advanced **Machine Learning algorithm** analyzes trends and feedback to curate the
+                    These meticulously selected for this week.
+                    Our advanced Machine Learning algorithm analyzes trends and feedback to curate the
                     best drops, bringing you fresh, exclusive selections **every week**.
                 </p>
             </div>
 
             <section id="how-it-works" class="container" style="padding-top: 2rem;">
-                <h2 class="section-title">The Forge Process</h2>
+                <h2 class="section-title">The GreatDeal Process</h2>
                 <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
                     <div class="card" style="text-align: center; padding: 1rem;">
                         <i class="fas fa-compass fa-2x"
@@ -896,7 +896,7 @@
             <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
         </div>
-        <p>&copy; 2025 Forge Threads. All Rights Reserved.</p>
+        <p>&copy; 2025 GreatDeal. All Rights Reserved.</p>
     </footer>
 
     <script>
@@ -914,59 +914,62 @@
         const blockedPopupContent = popup.querySelector('.location-blocked-content');
 
         async function saveAndRedirectToHome(btn) {
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = "Loading...";
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Loading...";
 
-            popup.style.display = 'none';
+    popup.style.display = 'none';
+    popup.classList.remove('blocked');
+    normalPopupContent.style.display = 'block';
+    blockedPopupContent.style.display = 'none';
+
+    try {
+        const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 10000
+            });
+        });
+
+        const coords = {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            accuracy: pos.coords.accuracy
+        };
+
+        const res = await fetch("/location", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(coords)
+        });
+
+        if (!res.ok) throw new Error('Failed to save location data');
+
+        // 👇 store flag for next page
+        sessionStorage.setItem("loadingRedirect", "true");
+
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 1000);
+
+    } catch (err) {
+        console.error("Geolocation or Location Save Error:", err);
+        btn.disabled = false;
+        btn.textContent = originalText;
+
+        if (err.code === err.PERMISSION_DENIED) {
+            popup.classList.add('blocked');
+            normalPopupContent.style.display = 'none';
+            blockedPopupContent.style.display = 'block';
+            popup.style.display = 'block';
+        } else {
             popup.classList.remove('blocked');
             normalPopupContent.style.display = 'block';
             blockedPopupContent.style.display = 'none';
-
-            try {
-                const pos = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        enableHighAccuracy: true,
-                        timeout: 10000
-                    });
-                });
-
-                const coords = {
-                    latitude: pos.coords.latitude,
-                    longitude: pos.coords.longitude,
-                    accuracy: pos.coords.accuracy
-                };
-
-                const res = await fetch("/location", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(coords)
-                });
-
-                if (!res.ok) throw new Error('Failed to save location data');
-
-                setTimeout(() => {
-                    window.location.href = "/home";  // ✅ redirect to /home route
-                }, 1000);
-
-            } catch (err) {
-                console.error("Geolocation or Location Save Error:", err);
-                btn.disabled = false;
-                btn.textContent = originalText;
-
-                if (err.code === err.PERMISSION_DENIED) {
-                    popup.classList.add('blocked');
-                    normalPopupContent.style.display = 'none';
-                    blockedPopupContent.style.display = 'block';
-                    popup.style.display = 'block';
-                } else {
-                    popup.classList.remove('blocked');
-                    normalPopupContent.style.display = 'block';
-                    blockedPopupContent.style.display = 'none';
-                    popup.style.display = 'block';
-                }
-            }
+            popup.style.display = 'block';
         }
+    }
+}
 
     </script>
 </body>
