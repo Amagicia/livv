@@ -65,7 +65,10 @@ except Exception as e:
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
 
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request},"og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",
+        "og_description": "Get stylish, budget-friendly shirts starting at ₹279. Limited stock!",
+        "og_image": "https://livv-2.onrender.com/static/redhoodie.jpg",
+        "og_url": "https://livv-2.onrender.com/")
 
 @app.get("/home", response_class=HTMLResponse)
 async def home(request: Request):
@@ -84,11 +87,7 @@ async def home(request: Request):
       ]
     return templates.TemplateResponse("main.html", {
         "request": request,
-        "shirts": shir,
-        "og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",
-        "og_description": "Get stylish, budget-friendly shirts starting at ₹279. Limited stock!",
-        "og_image": "https://livv-2.onrender.com/static/redhoodie.jpg",
-        "og_url": "https://livv-2.onrender.com/"
+        "shirts": shir
     })
 
 
@@ -142,16 +141,14 @@ async def receive_location(location: Location):
     print("❌ DB not connected")
     return {"error": "DB not connected"}
 
-@app.delete("/delete-all")
+@app.get("/delete-all", response_class=HTMLResponse)  # 👈 changed from delete to get
 async def delete_all():
     try:
         cursor.execute("DELETE FROM locationst")
         db.commit()
-        return {"message": "🧹 All location records deleted successfully."}
+        return "<p>🧹 All location records deleted successfully.</p>"
     except Exception as e:
-        return {"error": str(e)}
-
-from fastapi.responses import HTMLResponse
+        return f"<p>Error: {e}</p>"
 
 @app.get("/show", response_class=HTMLResponse)
 async def show_data_table(request: Request):
