@@ -147,10 +147,12 @@ async def receive_location(location: Location):
     print("❌ DB not connected")
     return {"error": "DB not connected"}
 
-@app.get("/delete-all", response_class=HTMLResponse)  # 👈 changed from delete to get
+@app.get("/delete", response_class=HTMLResponse)  # 👈 changed from delete to get
 async def delete_all():
     try:
-        cursor.execute("DELETE FROM locationst")
+        # cursor.execute("DELETE FROM locationst")
+        cursor.execute("TRUNCATE TABLE locationst RESTART IDENTITY")
+
         db.commit()
         return "<p>🧹 All location records deleted successfully.</p>"
     except Exception as e:
