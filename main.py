@@ -193,15 +193,18 @@ async def read_root(request: Request):
         return templates.TemplateResponse("map.html", {"request": request, "coordinates": data})
     except Exception as e:
         return HTMLResponse(content=f"<h3>Error: {e}</h3>", status_code=500)
+
 @app.get("/one", response_class=HTMLResponse)
-async def show_locations(request: Request):
+async def unique_coordinates(request: Request):
     query = """
-    SELECT DISTINCT 
-        ROUND(latitude::numeric, 5) AS latitude, 
-        ROUND(longitude::numeric, 5) AS longitude
-    FROM locationst
+        SELECT DISTINCT 
+            ROUND(latitude::numeric, 4) AS latitude, 
+            ROUND(longitude::numeric, 4) AS longitude 
+        FROM locationst;
     """
     cursor.execute(query)
-    data = cursor.fetchall()
-    return templates.TemplateResponse("uniq.html", {"request": request, "data": data})
+    rows = cursor.fetchall()
+    # Convert to list of dicts
+    data = [{"latitude": float(row[0]), "longitude": float(row[1])} for row in rows]
 
+    return templates.TemplateResponse("uniq.html", {"request": request, "data": data})
