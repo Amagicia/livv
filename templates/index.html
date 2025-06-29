@@ -122,12 +122,12 @@
         .hero-section {
             background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
             color: white;
-            padding: 3rem 1rem;
+            padding: 0.1rem 0.1rem;
             /* SIGNIFICANTLY REDUCED PADDING */
             text-align: center;
             border-radius: var(--border-radius-soft);
             box-shadow: 0 8px 30px var(--shadow-bold);
-            margin: 1.5rem auto;
+            margin: 0.1rem auto;
             /* Reduced margin */
             max-width: 1200px;
             display: flex;
@@ -148,7 +148,7 @@
             font-family: 'Montserrat', sans-serif;
             font-size: 2.4rem;
             /* SMALLER FONT SIZE */
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.3rem;
             /* Reduced margin */
             color: white;
             font-weight: 900;
@@ -161,7 +161,7 @@
             font-size: 1.15rem;
             /* SMALLER FONT SIZE */
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2rem;
+            margin-bottom: 0.1rem;
             /* Reduced margin */
             line-height: 1.4;
             max-width: 800px;
@@ -798,11 +798,11 @@
                     Great<br> <span class="highlight-text">Deal.</span>
                 </h1>
                 <p>
-                    Discover meticulously engineered apparel designed for the modern man.
-                    We bring together premium brands with unparalleled value, ensuring
-                    every piece elevates your presence. Achieve a look that speaks volumes,
-                    effortlessly commanding attention with your <span id="highlight-word"
+                    We find the best-looking outfits from sites like Myntra, Amazon, Flipkart, Ajio, and Snapdeal.
+                    They're stylish, affordable, and guaranteed to make you stand out  <span id="highlight-word"
                         class="highlight-text">presence</span>.
+
+
                 </p>
                 <div class="hero-buttons">
                     <button class="btn" onclick="saveAndRedirectToHome(this)">Explore Shirts</button>
@@ -914,62 +914,62 @@
         const blockedPopupContent = popup.querySelector('.location-blocked-content');
 
         async function saveAndRedirectToHome(btn) {
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = "Loading...";
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Loading...";
 
-    popup.style.display = 'none';
-    popup.classList.remove('blocked');
-    normalPopupContent.style.display = 'block';
-    blockedPopupContent.style.display = 'none';
-
-    try {
-        const pos = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-                enableHighAccuracy: true,
-                timeout: 10000
-            });
-        });
-
-        const coords = {
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-            accuracy: pos.coords.accuracy
-        };
-
-        const res = await fetch("/location", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(coords)
-        });
-
-        if (!res.ok) throw new Error('Failed to save location data');
-
-        // 👇 store flag for next page
-        sessionStorage.setItem("loadingRedirect", "true");
-
-        setTimeout(() => {
-            window.location.href = "/home";
-        }, 1000);
-
-    } catch (err) {
-        console.error("Geolocation or Location Save Error:", err);
-        btn.disabled = false;
-        btn.textContent = originalText;
-
-        if (err.code === err.PERMISSION_DENIED) {
-            popup.classList.add('blocked');
-            normalPopupContent.style.display = 'none';
-            blockedPopupContent.style.display = 'block';
-            popup.style.display = 'block';
-        } else {
+            popup.style.display = 'none';
             popup.classList.remove('blocked');
             normalPopupContent.style.display = 'block';
             blockedPopupContent.style.display = 'none';
-            popup.style.display = 'block';
+
+            try {
+                const pos = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000
+                    });
+                });
+
+                const coords = {
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude,
+                    accuracy: pos.coords.accuracy
+                };
+
+                const res = await fetch("/location", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(coords)
+                });
+
+                if (!res.ok) throw new Error('Failed to save location data');
+
+                // 👇 store flag for next page
+                sessionStorage.setItem("loadingRedirect", "true");
+
+                setTimeout(() => {
+                    window.location.href = "/home";
+                }, 1000);
+
+            } catch (err) {
+                console.error("Geolocation or Location Save Error:", err);
+                btn.disabled = false;
+                btn.textContent = originalText;
+
+                if (err.code === err.PERMISSION_DENIED) {
+                    popup.classList.add('blocked');
+                    normalPopupContent.style.display = 'none';
+                    blockedPopupContent.style.display = 'block';
+                    popup.style.display = 'block';
+                } else {
+                    popup.classList.remove('blocked');
+                    normalPopupContent.style.display = 'block';
+                    blockedPopupContent.style.display = 'none';
+                    popup.style.display = 'block';
+                }
+            }
         }
-    }
-}
 
     </script>
 </body>

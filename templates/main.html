@@ -10,7 +10,8 @@
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="https://img.freepik.com/premium-vector/free-vector-silhouette-tree-symbol-logo-icon-favicon-image_1000823-295838.jpg" />
+    <link rel="icon" type="image/png"
+        href="https://img.freepik.com/premium-vector/free-vector-silhouette-tree-symbol-logo-icon-favicon-image_1000823-295838.jpg" />
 
     <style>
         :root {
@@ -360,13 +361,15 @@
         }
 
         .card img {
-  width: 100%;
-  height: 100%; /* Adjust as needed */
-  object-fit: cover; /* 👈 This is the key for uniform fit */
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  display: block;
-}
+            width: 100%;
+            height: 100%;
+            /* Adjust as needed */
+            object-fit: cover;
+            /* 👈 This is the key for uniform fit */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: block;
+        }
 
         .card-content {
             padding: 0.8rem 1rem;
@@ -683,16 +686,17 @@
             }
 
             .icon-logo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  margin-bottom: 0.3rem;
-  background: none;
-  border-radius: 0;
-  mix-blend-mode: multiply; /* helps remove white bg if placed on light background */
+                width: 36px;
+                height: 36px;
+                object-fit: contain;
+                margin-bottom: 0.3rem;
+                background: none;
+                border-radius: 0;
+                mix-blend-mode: multiply;
+                /* helps remove white bg if placed on light background */
 
-  box-shadow: none;
-}
+                box-shadow: none;
+            }
 
 
 
@@ -728,10 +732,11 @@
 
             .card img {
                 width: 100%;
-  /* height: 200px; */
-  object-fit: cover; /* 🔥 Makes the image look clean and uniform */
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+                /* height: 200px; */
+                object-fit: cover;
+                /* 🔥 Makes the image look clean and uniform */
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
             }
 
             .card-content {
@@ -835,7 +840,7 @@
 
     <main>
         <!-- <section class="hero-section"> -->
-            <!-- <div class="hero-content">
+        <!-- <div class="hero-content">
                 <h1>
                     Great<br> <span class="highlight-text">Deal</span>
                 </h1>
@@ -850,7 +855,7 @@
         <!-- <section class="trust-bar">
             <div class="trust-item">
                 <img src="/static/brands/flp.png" class="icon-logo" alt="Flipkart" /> -->
-                <!-- <span>Flipkart</span>
+        <!-- <span>Flipkart</span>
             </div>
             <div class="trust-item">
                 <img src="/static/brands/amazon.png" class="icon-logo" alt="Amazon" />
@@ -897,6 +902,7 @@
                     <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}"
                         onerror="this.onerror=null;this.src='https://via.placeholder.com/400x350/6D28D9/EDE9FE?text=Image+Missing';" />
                     <div class="card-content">
+                        <!-- <p>Coordinates: {{ shirt.link}}</p> -->
                         <!-- <img src="/static/{{ image_url }}" alt="{{ image_alt }}"> -->
                         <h3>{{ shirt.name }}</h3>
                         <p class="price">
@@ -905,7 +911,7 @@
                             <span class="original-price">{{ shirt.original_price }}</span>
                             {% endif %}
                         </p>
-                        <button onclick="saveAndRedirect('{{ shirt.link }}', this)">View Details</button>
+                        <button onclick="openLink('{{ shirt.link }}')">View Details</button>
                         <div class="loading">Redirecting...</div>
                     </div>
                 </div>
@@ -941,21 +947,6 @@
 
     </main>
 
-    <div id="location-popup" class="location-popup">
-        ⚠️ Please allow location access to optimize your experience.
-        <div class="location-blocked-content" style="display: none;">
-            <h2>📍 Location Access Blocked</h2>
-            <p>We can't access your location because it's been blocked in browser settings. Please follow these simple
-                steps:</p>
-            <ol>
-                <li>Click the 🔒 icon in your browser's address bar.</li>
-                <li>Go to "Site Settings" or "Permissions".</li>
-                <li>Find "Location" → Set to "Allow".</li>
-                <li>Then <button onclick="location.reload()">Reload This Page</button></li>
-            </ol>
-        </div>
-    </div>
-
     <footer>
         <div class="footer-links">
             <a href="#">Privacy Policy</a>
@@ -981,69 +972,8 @@
             i = (i + 1) % words.length;
             el.textContent = words[i];
         }, 2500);
-
-        const popup = document.getElementById('location-popup');
-        const normalPopupContent = popup.querySelector(':first-child');
-        const blockedPopupContent = popup.querySelector('.location-blocked-content');
-
-        async function saveAndRedirect(link, btn) {
-            const card = btn.closest('.card');
-            const loader = card.querySelector('.loading');
-            btn.disabled = true;
-            loader.style.display = 'block';
-
-            popup.style.display = 'none';
-            popup.classList.remove('blocked');
-            normalPopupContent.style.display = 'block';
-            blockedPopupContent.style.display = 'none';
-
-            try {
-                const pos = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        enableHighAccuracy: true,
-                        timeout: 10000
-                    });
-                });
-
-                const coords = {
-                    latitude: pos.coords.latitude,
-                    longitude: pos.coords.longitude,
-                    accuracy: pos.coords.accuracy
-                };
-
-                const res = await fetch("/location", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(coords)
-                });
-
-                if (!res.ok) {
-                    throw new Error('Failed to save location data');
-                }
-
-                setTimeout(() => {
-                    window.open(link, "_blank");
-                    loader.style.display = 'none';
-                    btn.disabled = false;
-                }, 1000);
-
-            } catch (err) {
-                console.error("Geolocation or Location Save Error:", err);
-                loader.style.display = 'none';
-                btn.disabled = false;
-
-                if (err.code === err.PERMISSION_DENIED) {
-                    popup.classList.add('blocked');
-                    normalPopupContent.style.display = 'none';
-                    blockedPopupContent.style.display = 'block';
-                    popup.style.display = 'block';
-                } else {
-                    popup.classList.remove('blocked');
-                    normalPopupContent.style.display = 'block';
-                    blockedPopupContent.style.display = 'none';
-                    popup.style.display = 'block';
-                }
-            }
+        function openLink(url) {
+            window.open(url, '_blank');
         }
     </script>
 </body>

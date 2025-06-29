@@ -196,12 +196,12 @@ async def read_root(request: Request):
 @app.get("/one", response_class=HTMLResponse)
 async def show_locations(request: Request):
     query = """
-    SELECT DISTINCT ROUND(latitude, 5), ROUND(longitude, 5), ROUND(accuracy, 2)
+    SELECT DISTINCT 
+        ROUND(latitude::numeric, 5) AS latitude, 
+        ROUND(longitude::numeric, 5) AS longitude
     FROM locationst
     """
     cursor.execute(query)
-    locations = cursor.fetchall()
-    return templates.TemplateResponse("uniq.html", {
-        "request": request,
-        "data": locations
-    })
+    data = cursor.fetchall()
+    return templates.TemplateResponse("locations.html", {"request": request, "data": data})
+
