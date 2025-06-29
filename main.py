@@ -62,12 +62,12 @@ except Exception as e:
     print("❌ DB connection error:", e)
     db = None
 
-# @app.get("/", response_class=HTMLResponse)
-# async def home(request: Request):
-
-#     return templates.TemplateResponse("index.html", {"request": request, "shirts": shir})
-
 @app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/home", response_class=HTMLResponse)
 async def home(request: Request):
     print("📥 GET request to /")
     shir = [
@@ -82,7 +82,7 @@ async def home(request: Request):
         {"name": "Men Regular Fit Solid Spread Collar Casual Shirt  (Pack of 3)", "price": "₹500", "image": "img10.jpg", "link": "https://dl.flipkart.com/dl/youth-first-men-solid-casual-cream-black-brown-shirt/p/itmad86102879757?pid=SHTHCZ4ZUXEFMTHK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.68a3c9c0-617e-475a-83cc-3d52b7ff67ed.SHTHCZ4ZUXEFMTHK&_appId=WA"},
         {"name": "Men Regular Fit Checkered Spread Collar Casual Shirt", "price": "₹369", "image": "img11.jpg", "link": "https://dl.flipkart.com/dl/vellosta-men-checkered-casual-white-shirt/p/itm17501c959696a?pid=SHTH8SC79DM6BXYQ&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.e41915fa-267d-459e-9d03-4d3a00aa5d93.SHTH8SC79DM6BXYQ&_appId=WA"},
       ]
-    return templates.TemplateResponse("index.html", {
+    return templates.TemplateResponse("main.html", {
         "request": request,
         "shirts": shir,
         "og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",

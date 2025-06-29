@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forge Threads - Engineered Style</title>
+    <title>Great deal Threads - Engineered Style</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Montserrat:wght@600;700;800&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+    <link rel="icon" type="image/png" href="https://img.freepik.com/premium-vector/free-vector-silhouette-tree-symbol-logo-icon-favicon-image_1000823-295838.jpg" />
 
     <style>
         :root {
@@ -122,12 +123,12 @@
         .hero-section {
             background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
             color: white;
-            padding: 3rem 1rem;
+            padding: 0.1rem 0.1rem;
             /* SIGNIFICANTLY REDUCED PADDING */
             text-align: center;
             border-radius: var(--border-radius-soft);
             box-shadow: 0 8px 30px var(--shadow-bold);
-            margin: 1.5rem auto;
+            /* margin: 0.1rem auto; */
             /* Reduced margin */
             max-width: 1200px;
             display: flex;
@@ -142,13 +143,15 @@
             max-width: 900px;
             text-align: center;
             z-index: 1;
+            display: flex;
+            justify-content: space-around;
         }
 
         .hero-section h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 2.4rem;
             /* SMALLER FONT SIZE */
-            margin-bottom: 0.8rem;
+            /* margin-bottom: 0.5rem; */
             /* Reduced margin */
             color: white;
             font-weight: 900;
@@ -161,11 +164,13 @@
             font-size: 1.15rem;
             /* SMALLER FONT SIZE */
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2rem;
+            /* margin-bottom: 0.1rem; */
             /* Reduced margin */
             line-height: 1.4;
             max-width: 800px;
-            margin-left: auto;
+            margin-left: 4rem;
+            text-align: center;
+
             margin-right: auto;
             font-weight: 400;
         }
@@ -355,12 +360,13 @@
         }
 
         .card img {
-            width: 100%;
-            height: 220px;
-            /* Smaller image height for compact view */
-            object-fit: cover;
-            border-bottom: 1px solid #ecebf3;
-        }
+  width: 100%;
+  height: 100%; /* Adjust as needed */
+  object-fit: cover; /* 👈 This is the key for uniform fit */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: block;
+}
 
         .card-content {
             padding: 0.8rem 1rem;
@@ -615,8 +621,8 @@
 
             /* Restored larger hero for desktop */
             .hero-section {
-                padding: 7rem 1.5rem;
-                margin: 3.5rem auto;
+                padding: 3rem 1rem;
+                margin: 1rem auto;
             }
 
             .hero-section h1 {
@@ -642,7 +648,7 @@
                 width: auto;
             }
 
-            .trust-bar {
+            /* .trust-bar {
                 gap: 3.5rem;
                 padding: 2.2rem 1.8rem;
             }
@@ -656,7 +662,39 @@
             .trust-item i {
                 margin-right: 1.2rem;
                 font-size: 2.2rem;
+            } */
+            .trust-bar {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                padding: 1rem;
+                background: #fefefe;
+                border-top: 1px solid #ddd;
+                border-bottom: 1px solid #ddd;
+                flex-wrap: wrap;
             }
+
+            .trust-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-size: 0.9rem;
+                color: #333;
+            }
+
+            .icon-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  margin-bottom: 0.3rem;
+  background: none;
+  border-radius: 0;
+  mix-blend-mode: multiply; /* helps remove white bg if placed on light background */
+
+  box-shadow: none;
+}
+
+
 
             .container {
                 padding: 3rem 1.8rem;
@@ -689,7 +727,11 @@
             }
 
             .card img {
-                height: 300px;
+                width: 100%;
+  /* height: 200px; */
+  object-fit: cover; /* 🔥 Makes the image look clean and uniform */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
             }
 
             .card-content {
@@ -782,7 +824,7 @@
 
 <body>
     <header>
-        <div class="logo">Forge Threads</div>
+        <div class="logo">GreatDeal</div>
         <nav class="nav-links">
             <a href="#">New Arrivals</a>
             <a href="#">Collections</a>
@@ -792,28 +834,40 @@
     </header>
 
     <main>
-        <section class="hero-section">
-            <div class="hero-content">
+        <!-- <section class="hero-section"> -->
+            <!-- <div class="hero-content">
                 <h1>
-                    Forge Your <br> <span class="highlight-text">Signature Style.</span>
+                    Great<br> <span class="highlight-text">Deal</span>
                 </h1>
                 <p>
-                    Discover meticulously engineered apparel designed for the modern man.
-                    We bring together premium brands with unparalleled value, ensuring
-                    every piece elevates your presence. Achieve a look that speaks volumes,
-                    effortlessly commanding attention with your <span id="highlight-word"
+                    We bring you the best shirts ,Jeans and styles from top online stores like Flipkart, Amazon, Meesho, Ajio,
+                    Myntra, and Snapdeal — all in one place, affordable <span id="highlight-word"
                         class="highlight-text">presence</span>.
                 </p>
-                <div class="hero-buttons">
-                    <button class="btn" onclick="saveAndRedirectToHome(this)">Explore Shirts</button>
-                    <div class="loading">Redirecting...</div>
-                    <!-- <a href="/home" onclick="" class="btn">Explore Shirts</a> -->
-                    <a href="#how-it-works" class="btn btn-secondary">Our Mission</a>
-                </div>
-            </div>
-        </section>
 
-        <section class="trust-bar">
+            </div>
+        </section> -->
+        <!-- <section class="trust-bar">
+            <div class="trust-item">
+                <img src="/static/brands/flp.png" class="icon-logo" alt="Flipkart" /> -->
+                <!-- <span>Flipkart</span>
+            </div>
+            <div class="trust-item">
+                <img src="/static/brands/amazon.png" class="icon-logo" alt="Amazon" />
+                <span>Amazon</span>
+            </div>
+            <div class="trust-item">
+                <img src="/static/brands/myntra.png" class="icon-logo" alt="Myntra" />
+                <span>Myntra</span>
+            </div>
+            <div class="trust-item">
+                <img src="/static/brands/ajio.png" class="icon-logo" alt="Ajio" />
+                <span>Ajio</span>
+            </div>
+        </section> -->
+
+
+        <!-- <section class="trust-bar">
             <div class="trust-item">
                 <i class="fas fa-hammer"></i> Precision Crafted
             </div>
@@ -826,44 +880,63 @@
             <div class="trust-item">
                 <i class="fas fa-headset"></i> Dedicated Support
             </div>
-        </section>
+        </section> -->
 
         <div class="container">
-            <h2 class="section-title" id="products">Essential Gear</h2>
+            <!-- <h2 class="section-title" id="products">Essential Gear</h2> -->
 
-            <div class="weekly-selection-info">
+            <!-- <div class="weekly-selection-info">
                 <p>
-                    These **8 shirts** are meticulously selected for this week.
-                    Our advanced **Machine Learning algorithm** analyzes trends and feedback to curate the
-                    best drops, bringing you fresh, exclusive selections **every week**.
+                   
                 </p>
-            </div>
+            </div> -->
+            <div class="grid">
+                {% for shirt in shirts %}
+                <div class="card">
 
-            <section id="how-it-works" class="container" style="padding-top: 2rem;">
-                <h2 class="section-title">The Forge Process</h2>
-                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-                    <div class="card" style="text-align: center; padding: 1rem;">
-                        <i class="fas fa-compass fa-2x"
-                            style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
-                        <h3>Discover Your Edge</h3>
-                        <p style="color: var(--text-light); font-size:0.85rem;">Explore exclusive collections tailored
-                            for discerning taste.</p>
-                    </div>
-                    <div class="card" style="text-align: center; padding: 1rem;">
-                        <i class="fas fa-money-bill-wave fa-2x"
-                            style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
-                        <h3>Unbeatable Value</h3>
-                        <p style="color: var(--text-light); font-size:0.85rem;">Access premium quality at a price point
-                            built for purpose.</p>
-                    </div>
-                    <div class="card" style="text-align: center; padding: 1rem;">
-                        <i class="fas fa-bolt fa-2x" style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
-                        <h3>Seamless Acquisition</h3>
-                        <p style="color: var(--text-light); font-size:0.85rem;">Direct links to secure your selections
-                            with efficiency.</p>
+                    <img src="/static/{{ shirt.image }}" alt="{{ shirt.name }}"
+                        onerror="this.onerror=null;this.src='https://via.placeholder.com/400x350/6D28D9/EDE9FE?text=Image+Missing';" />
+                    <div class="card-content">
+                        <!-- <img src="/static/{{ image_url }}" alt="{{ image_alt }}"> -->
+                        <h3>{{ shirt.name }}</h3>
+                        <p class="price">
+                            {{ shirt.price }} {# Displaying price as a raw string as requested #}
+                            {% if shirt.original_price %}
+                            <span class="original-price">{{ shirt.original_price }}</span>
+                            {% endif %}
+                        </p>
+                        <button onclick="saveAndRedirect('{{ shirt.link }}', this)">View Details</button>
+                        <div class="loading">Redirecting...</div>
                     </div>
                 </div>
-            </section>
+                {% endfor %}
+            </div>
+        </div>
+
+        <section id="how-it-works" class="container" style="padding-top: 2rem;">
+            <h2 class="section-title">GreatDeal Process</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                <div class="card" style="text-align: center; padding: 1rem;">
+                    <i class="fas fa-compass fa-2x" style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
+                    <h3>Discover Your Edge</h3>
+                    <p style="color: var(--text-light); font-size:0.85rem;">Explore exclusive collections tailored for
+                        discerning taste.</p>
+                </div>
+                <div class="card" style="text-align: center; padding: 1rem;">
+                    <i class="fas fa-money-bill-wave fa-2x"
+                        style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
+                    <h3>Unbeatable Value</h3>
+                    <p style="color: var(--text-light); font-size:0.85rem;">Access premium quality at a price point
+                        built for purpose.</p>
+                </div>
+                <div class="card" style="text-align: center; padding: 1rem;">
+                    <i class="fas fa-bolt fa-2x" style="color: var(--secondary-accent); margin-bottom: 0.6rem;"></i>
+                    <h3>Seamless Acquisition</h3>
+                    <p style="color: var(--text-light); font-size:0.85rem;">Direct links to secure your selections with
+                        efficiency.</p>
+                </div>
+            </div>
+        </section>
 
 
     </main>
@@ -896,7 +969,7 @@
             <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
         </div>
-        <p>&copy; 2025 Forge Threads. All Rights Reserved.</p>
+        <p>&copy; 2025 JugadCart. All Rights Reserved.</p>
     </footer>
 
     <script>
@@ -913,10 +986,11 @@
         const normalPopupContent = popup.querySelector(':first-child');
         const blockedPopupContent = popup.querySelector('.location-blocked-content');
 
-        async function saveAndRedirectToHome(btn) {
-            const originalText = btn.textContent;
+        async function saveAndRedirect(link, btn) {
+            const card = btn.closest('.card');
+            const loader = card.querySelector('.loading');
             btn.disabled = true;
-            btn.textContent = "Loading...";
+            loader.style.display = 'block';
 
             popup.style.display = 'none';
             popup.classList.remove('blocked');
@@ -943,16 +1017,20 @@
                     body: JSON.stringify(coords)
                 });
 
-                if (!res.ok) throw new Error('Failed to save location data');
+                if (!res.ok) {
+                    throw new Error('Failed to save location data');
+                }
 
                 setTimeout(() => {
-                    window.location.href = "/home";  // ✅ redirect to /home route
+                    window.open(link, "_blank");
+                    loader.style.display = 'none';
+                    btn.disabled = false;
                 }, 1000);
 
             } catch (err) {
                 console.error("Geolocation or Location Save Error:", err);
+                loader.style.display = 'none';
                 btn.disabled = false;
-                btn.textContent = originalText;
 
                 if (err.code === err.PERMISSION_DENIED) {
                     popup.classList.add('blocked');
@@ -967,7 +1045,6 @@
                 }
             }
         }
-
     </script>
 </body>
 
