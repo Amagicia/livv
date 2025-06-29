@@ -198,8 +198,8 @@ async def read_root(request: Request):
 async def unique_coordinates(request: Request):
     query = """
         SELECT DISTINCT 
-            ROUND(latitude::numeric, 4) AS latitude, 
-            ROUND(longitude::numeric, 4) AS longitude 
+            ROUND(latitude::numeric, 5) AS latitude, 
+            ROUND(longitude::numeric, 5) AS longitude 
         FROM locationst;
     """
     cursor.execute(query)
