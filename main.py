@@ -62,13 +62,19 @@ except Exception as e:
     print("❌ DB connection error:", e)
     db = None
 
+from fastapi.responses import HTMLResponse
+from fastapi import Request
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-
-    return templates.TemplateResponse("index.html", {"request": request},"og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",
         "og_description": "Get stylish, budget-friendly shirts starting at ₹279. Limited stock!",
         "og_image": "https://livv-2.onrender.com/static/redhoodie.jpg",
-        "og_url": "https://livv-2.onrender.com/")
+        "og_url": "https://livv-2.onrender.com/"
+    })
+
 
 @app.get("/home", response_class=HTMLResponse)
 async def home(request: Request):
