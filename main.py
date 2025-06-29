@@ -66,7 +66,7 @@ from fastapi.responses import HTMLResponse
 from fastapi import Request
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
+async def fpage(request: Request):
     return templates.TemplateResponse("index.html", {
         "request": request,
         "og_title": "🔥 Latest Men’s Shirts Online | Fashion Deals",
@@ -88,7 +88,7 @@ async def home(request: Request):
         {"name": "Men Slim Mid Rise Black Jeans", "price": "₹499", "image": "img6.jpg", "link": "https://dl.flipkart.com/dl/brexx-slim-men-black-jeans/p/itm0bce96d328c7e?pid=JEAHYCVUYMC9QQRT&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.bda918e4-c13f-4ddc-977a-88a0ef6e7f4f.JEAHYCVUYMC9QQRT&_appId=WA"},
         {"name": "Men Regular Fit Striped Spread Collar Casual Shirt", "price": "₹930", "image": "img7.jpg", "link": "https://dl.flipkart.com/dl/house-mahnots-men-striped-casual-blue-shirt/p/itm7f012b430aa69?pid=SHTH8ZFFEMFZGXTV&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.d3eb9bac-55c2-443d-ab75-f25c24abd3da.SHTH8ZFFEMFZGXTV&_appId=WA"},
         {"name": "Men Regular Mid Rise Blue Jeans", "price": "₹1039", "image": "img5.jpg", "link": "https://dl.flipkart.com/dl/flying-machine-regular-men-blue-jeans/p/itm5fa92a3147a92?pid=JEAH3XVYEG9TGPYK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.4a293916-7fd5-40a1-8d65-4e8afa3f893a.JEAH3XVYEG9TGPYK&_appId=WA"},
-        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt  (Pack of 3)", "price": "₹500", "image": "img10.jpg", "link": "https://dl.flipkart.com/dl/youth-first-men-solid-casual-cream-black-brown-shirt/p/itmad86102879757?pid=SHTHCZ4ZUXEFMTHK&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.68a3c9c0-617e-475a-83cc-3d52b7ff67ed.SHTHCZ4ZUXEFMTHK&_appId=WA"},
+        {"name": "Men Regular Fit Solid Spread Collar Casual Shirt  (Pack of 3)", "price": "₹500", "image": "img10.jpg", "link": "https://www.flipkart.com/youth-first-men-solid-casual-black-white-light-green-shirt/p/itm04da8a637950d?pid=SHTHCZ4ZGRNGHEBY&lid=LSTSHTHCZ4ZGRNGHEBY7ZWRYZ&marketplace=FLIPKART&sattr[]=color&st=color"},
         {"name": "Men Regular Fit Checkered Spread Collar Casual Shirt", "price": "₹369", "image": "img11.jpg", "link": "https://dl.flipkart.com/dl/vellosta-men-checkered-casual-white-shirt/p/itm17501c959696a?pid=SHTH8SC79DM6BXYQ&marketplace=FLIPKART&cmpid=product.share.pp&_refId=PP.e41915fa-267d-459e-9d03-4d3a00aa5d93.SHTH8SC79DM6BXYQ&_appId=WA"},
       ]
     return templates.TemplateResponse("main.html", {
@@ -203,5 +203,5 @@ async def show_locations(request: Request):
     """
     cursor.execute(query)
     data = cursor.fetchall()
-    return templates.TemplateResponse("locations.html", {"request": request, "data": data})
+    return templates.TemplateResponse("uniq.html", {"request": request, "data": data})
 
